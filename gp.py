@@ -47,11 +47,14 @@ class App(object):
         HTML = getHTML(url)
         soup = BeautifulSoup(HTML)
 
-        self._perm = soup('li', {'class': 'doc-permission-group'})
+        soup_list = soup('li', {'class': 'doc-permission-group'})
 
-        print self._perm
-    def __iter__(self):
-        return iter(self._iterable)
+        for x in soup_list:
+            a =  x('div', {'class': 'doc-permission-description'})[0]
+            print a.contents
+
+        # print self._perm
+
 
 class Page(object):
     def __init__(self, page, query):
@@ -120,4 +123,4 @@ def showResults(string):
 i = Search("twitter")
 a = i.get_first()
 # i.compare_all()
-print a.get_premis()
+# print a.get_premis()
