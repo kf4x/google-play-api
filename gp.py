@@ -20,19 +20,21 @@ Page >1  increment start by 24
 https://play.google.com/store/search?q=twitter&c=apps&start=24&num=24
 """
 
+fetched = False
 
-class App(object):
+
+class App(object):  # App class is used to hold information about an individual app scraped from the app store
 
     def __init__(self, itemHTML):
         self.bs = itemHTML
         self._set_name()
-        self._set_prem()
+        self._set_perm()
 
     def _set_name(self):
-        link = self.bs('a', {'class': 'title'})[0]
+        link = self.bs('a', {'class': 'title'})[0]  # equivalent of find all 'a tags' with class title
         self._name = link.contents[0]
 
-    def _set_prem(self):
+    def _set_perm(self):
         link = self.bs('div', {'class': 'details goog-inline-block'})[0]
         prem_link = "https://play.google.com/"+link.contents[0]['href']
         self._setting_permission(prem_link)
@@ -43,7 +45,7 @@ class App(object):
     def get_permission(self):
         return self._permission_list
 
-    def _setting_permission(self, url):
+    def _setting_permission(self, url):  # intermediary step that collects all the permissions from the page
         self._permission_list = []
         HTML = getHTML(url)
         soup = BeautifulSoup(HTML)
@@ -51,13 +53,13 @@ class App(object):
         soup_list = soup('li', {'class': 'doc-permission-group'})
 
         for x in soup_list:
-            a = x('div', {'class': 'doc-permission-description'})[0] # also iterate through this
+            a = x('div', {'class': 'doc-permission-description'})[0]  # TODO also iterate through this
             self._permission_list.append(a.contents[0])
 
         # print self._perm
 
 
-class Page(object):
+class Page(object):  # page class to hold page of apps
     def __init__(self, page, query):
         self.page = page
         self.urlString = makeQuery(query)
@@ -67,7 +69,7 @@ class Page(object):
     def _get_apps(self):
 
         soup = BeautifulSoup(self.HTML)
-        items = soup('li', {'class': 'search-results-item'})
+        items = soup('li', {'class': 'search-results-item'})  # each app is under considered an 'item'
         return items
 
     def get_all_apps(self):
@@ -83,31 +85,43 @@ class Page(object):
 
         return appArray
 
-fetched = False
 
+class Search(object):   # search class is used to hold the search (interacts with user)
 
-class Search(object):
-    def __init__(self, search='twitter'):
+    def __init__(self, search='twitter'):  # default search term is 'twitter'
         self.search = search
+        self.fetched = False
 
     def _get_page(self, page=1):
         self.page = Page(page, self.search)
         return self.page
 
-    def get_first(self):
+    def get_first(self):    # a convenience method
 
-        if fetched is False:
+        if self.fetched is False:
             self._get_page()
+            self.fetched = True
 
-        # self._all = page.get_all_apps()[0]
-        return self.page.get_all_apps()[0]
+        return self.page.get_all_apps()[0]  # returns first app in list
 
     def get_all(self):
 
-        if fetched is False:
+        if self.fetched is False:
             self._get_page()
-        # self._all = page.get_all_apps()[0]
-        return self.page.get_all_apps()
+            self.fetched = True
+
+        return self.page.get_all_apps()  # returns list of all(24) apps on the page
+
+    def get_page(self, page):   # allows to specify page number
+
+        if page > 1:
+            self._get_page(page)
+            self.fetched = True
+        elif page == 1 and self.fetched is False:
+            self._get_page()
+            self.fetched = True
+
+        return self.page.get_all_apps()  # returns list of apps on specified page
 
     def get_HTML(self):
         return self.page.HTML
@@ -126,14 +140,6 @@ class Search(object):
             print aa.union(self.page.get_all_apps()[x]) - aa.intersection(self.page.get_all_apps()[x])
 
 
-'''
-def callback(cb):
-    # call the fn
-    cb()
-
-
-def showResults(string):
-    print string
 
 i = Search("twitter")
 a = i.get_first()
@@ -144,4 +150,3 @@ p = i.get_all()
 for s in range(0,24):
     print p[s].get_name(), p[s].get_premis()
 # print a.get_permission()
-'''

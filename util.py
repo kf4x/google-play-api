@@ -10,3 +10,7 @@ def getHTML(url):
 
 def makeQuery(q):
     return "https://play.google.com/store/search?q="+ q +"&c=apps"
+
+
+def pageQuery(q, p):
+    return q + "&start=" + str((p-1)*24) +"&num=24"
