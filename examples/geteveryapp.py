@@ -17,6 +17,7 @@ for page_num in range(1,20):
         out += "\n" + page[app].get_name() + " - " + str(page[app].get_permission())
 
     out += "\n"
-    # fpi.write(out)
-    print out
+    mystring = out.encode('ascii', 'ignore')
+    fpi.write(mystring)
+    # print out
 
