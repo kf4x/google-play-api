@@ -112,12 +112,12 @@ class Search(object):   # search class is used to hold the search (interacts wit
 
     def get_page(self, page):   # allows to specify page number
 
-        if page > 1:
-            self._get_page(page)
-            self.fetched = True
-        elif page == 1 and self.fetched is False:
-            self._get_page()
-            self.fetched = True
+        # if page > 1:
+        self._get_page(page)
+        self.fetched = True
+        # elif page == 1 and self.fetched is False:
+        #     self._get_page()
+        #     self.fetched = True
 
         return self.page.get_all_apps()  # returns list of apps on specified page
 
