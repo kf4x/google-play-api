@@ -34,7 +34,7 @@ If you would like to see all the apps with there permissions(24apps/page)
 
 
 ```python
-for s in range(0,24):
-    print p[s].get_name(), p[s].get_permission()
+for app_num in range(0,24):
+    print page[app_num].get_name(), page[app_num].get_permission()
 ```
 
