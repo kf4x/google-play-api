@@ -28,7 +28,6 @@ class App(object):
         self._set_name()
         self._set_prem()
 
-
     def _set_name(self):
         link = self.bs('a', {'class': 'title'})[0]
         self._name = link.contents[0]
@@ -41,7 +40,7 @@ class App(object):
     def get_name(self):
         return self._name
 
-    def get_premis(self):
+    def get_permission(self):
         return self._permission_list
 
     def _setting_permission(self, url):
@@ -139,10 +138,10 @@ def showResults(string):
 i = Search("twitter")
 a = i.get_first()
 # print a.get_name()
-# print a.get_premis()
+# print a.get_permission()
 
 p = i.get_all()
 for s in range(0,24):
     print p[s].get_name(), p[s].get_premis()
-# print a.get_premis()
+# print a.get_permission()
 '''

@@ -25,7 +25,7 @@ app = search.get_first()
 Get entire first page
 
 ```python
-page = i.get_all()
+page = search.get_all()
 ```
 
 ### More
@@ -35,5 +35,6 @@ If you would like to see all the apps with there permissions(24apps/page)
 
 ```python
 for s in range(0,24):
-    print p[s].get_name(), p[s].get_premis()
+    print p[s].get_name(), p[s].get_permission()
 ```
+
