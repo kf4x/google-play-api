@@ -61,10 +61,8 @@ class App(object):  # App class is used to hold information about an individual 
 
 class Page(object):  # page class to hold page of apps
     def __init__(self, page, query):
-        self.page = page
-        self.urlString = makeQuery(query)
+        self.urlString = makeQuery(query, page)
         self.HTML = getHTML(self.urlString)
-        # print self.HTML
 
     def _get_apps(self):
 
@@ -142,11 +140,11 @@ class Search(object):   # search class is used to hold the search (interacts wit
 
 
 i = Search("twitter")
-a = i.get_first()
+# a = i.get_first()
 # print a.get_name()
 # print a.get_permission()
 
-p = i.get_all()
+p = i.get_page(2)
 for s in range(0,24):
-    print p[s].get_name(), p[s].get_premis()
+    print p[s].get_name(), p[s].get_permission()
 # print a.get_permission()

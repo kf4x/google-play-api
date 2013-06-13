@@ -8,9 +8,6 @@ def getHTML(url):
     return urllib2.urlopen(url).read()
 
 
-def makeQuery(q):
-    return "https://play.google.com/store/search?q="+ q +"&c=apps"
+def makeQuery(q, p):
+    return "https://play.google.com/store/search?q=" + q + "&c=apps" + "&start=" + str((p-1)*24) +"&num=24"
 
-
-def pageQuery(q, p):
-    return q + "&start=" + str((p-1)*24) +"&num=24"
