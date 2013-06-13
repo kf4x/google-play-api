@@ -139,12 +139,12 @@ class Search(object):   # search class is used to hold the search (interacts wit
 
 
 
-i = Search("twitter")
+# i = Search("twitter")
 # a = i.get_first()
 # print a.get_name()
 # print a.get_permission()
 
-p = i.get_page(2)
-for s in range(0,24):
-    print p[s].get_name(), p[s].get_permission()
+# p = i.get_page(2)
+# for s in range(0,24):
+#     print p[s].get_name(), p[s].get_permission()
 # print a.get_permission()
