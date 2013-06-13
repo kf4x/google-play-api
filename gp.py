@@ -28,6 +28,7 @@ class App(object):
         self._set_name()
         self._set_prem()
 
+
     def _set_name(self):
         link = self.bs('a', {'class': 'title'})[0]
         self._name = link.contents[0]
@@ -41,17 +42,18 @@ class App(object):
         return self._name
 
     def get_premis(self):
-        return self._perm
+        return self._permission_list
 
     def _setting_permission(self, url):
+        self._permission_list = []
         HTML = getHTML(url)
         soup = BeautifulSoup(HTML)
 
         soup_list = soup('li', {'class': 'doc-permission-group'})
 
         for x in soup_list:
-            a =  x('div', {'class': 'doc-permission-description'})[0]
-            print a.contents
+            a = x('div', {'class': 'doc-permission-description'})[0] # also iterate through this
+            self._permission_list.append(a.contents[0])
 
         # print self._perm
 
@@ -77,12 +79,14 @@ class Page(object):
 
         for app in items:
         #   need to turn into app object and use app class
+
             appArray.append(App(app))
 
         return appArray
 
-
+fetched = False
 class Search(object):
+
     def __init__(self, search='twitter'):
         self.search = search
 
@@ -92,20 +96,30 @@ class Search(object):
 
     def get_first(self):
 
-        page = self._get_page()
-        return page.get_all_apps()[0]
+        if fetched is False:
+            self._get_page()
+
+        # self._all = page.get_all_apps()[0]
+        return self.page.get_all_apps()[0]
+
+    def get_all(self):
+
+        if fetched is False:
+            self._get_page()
+        # self._all = page.get_all_apps()[0]
+        return self.page.get_all_apps()
 
     def get_HTML(self):
         return self.page.HTML
 
     def compare_all(self):
-        h = list(self.get_first())
+        h = list(self.page.get_all_apps())
         aa = set(h)
         print "The first app has permissions\n"
         print aa
         print "\nThe similarities\n"
         for x in range(1, 24):
-            print aa.intersection(self.page.get_all_apps()[x])
+            print aa.intersection(list(self._all))
 
         print "\nThe differences\n"
         for x in range(1, 24):
@@ -122,5 +136,10 @@ def showResults(string):
 
 i = Search("twitter")
 a = i.get_first()
-# i.compare_all()
+# print a.get_name()
+# print a.get_premis()
+
+p = i.get_all()
+for s in range(0,24):
+    print p[s].get_name(), p[s].get_premis()
 # print a.get_premis()
