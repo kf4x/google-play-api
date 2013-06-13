@@ -30,10 +30,11 @@
       <file leaf-file-name="gp.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="143" column="44" selection-start="3314" selection-end="3314" vertical-scroll-proportion="0.9130435">
+            <state line="128" column="0" selection-start="3038" selection-end="3038" vertical-scroll-proportion="0.90869564">
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
                 <element signature="e#84#369#1" expanded="false" />
+                <element signature="e#3039#3327#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -370,10 +371,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="143" column="44" selection-start="3314" selection-end="3314" vertical-scroll-proportion="0.9130435">
+        <state line="128" column="0" selection-start="3038" selection-end="3038" vertical-scroll-proportion="0.90869564">
           <folding>
             <element signature="e#0#39#0" expanded="true" />
             <element signature="e#84#369#1" expanded="false" />
+            <element signature="e#3039#3327#1" expanded="false" />
           </folding>
         </state>
       </provider>

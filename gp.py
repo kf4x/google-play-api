@@ -85,8 +85,9 @@ class Page(object):
         return appArray
 
 fetched = False
-class Search(object):
 
+
+class Search(object):
     def __init__(self, search='twitter'):
         self.search = search
 
@@ -125,7 +126,8 @@ class Search(object):
         for x in range(1, 24):
             print aa.union(self.page.get_all_apps()[x]) - aa.intersection(self.page.get_all_apps()[x])
 
-# helpers if needed
+
+'''
 def callback(cb):
     # call the fn
     cb()
@@ -143,3 +145,4 @@ p = i.get_all()
 for s in range(0,24):
     print p[s].get_name(), p[s].get_premis()
 # print a.get_premis()
+'''
