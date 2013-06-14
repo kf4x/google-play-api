@@ -53,10 +53,11 @@ class App(object):  # App class is used to hold information about an individual 
         soup_list = soup('li', {'class': 'doc-permission-group'})
 
         for x in soup_list:
-            a = x('div', {'class': 'doc-permission-description'})[0]  # TODO also iterate through this
-            self._permission_list.append(a.contents[0])
+            a = x('div', {'class': 'doc-permission-description'}) 
 
-        # print self._perm
+            if len(a) > 0:
+                for i in range(0, len(a)):
+                    self._permission_list.append(a[i].contents[0])
 
 
 class Page(object):  # page class to hold page of apps
@@ -124,8 +125,8 @@ class Search(object):   # search class is used to hold the search (interacts wit
     def get_HTML(self):
         return self.page.HTML
 
-    def compare_all(self):
-        h = list(self.page.get_all_apps())
+    def compare_page(self, page):
+        h = list(self.get_page(page))
         aa = set(h)
         print "The first app has permissions\n"
         print aa
@@ -139,12 +140,12 @@ class Search(object):   # search class is used to hold the search (interacts wit
 
 
 
-# i = Search("twitter")
+i = Search("twitter")
 # a = i.get_first()
 # print a.get_name()
 # print a.get_permission()
 
-# p = i.get_page(2)
-# for s in range(0,24):
-#     print p[s].get_name(), p[s].get_permission()
+p = i.get_page(2)
+for s in range(0,24):
+    print p[s].get_name(), p[s].get_permission()
 # print a.get_permission()
