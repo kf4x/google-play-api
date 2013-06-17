@@ -2,7 +2,7 @@ from gp import Search
 import csv
 
 # output file
-FILENAME = "search.txt"
+FILENAME = "list.csv"
 
 # make a search object supplying the constructor with with term you want to search for
 search = Search("twitter")
