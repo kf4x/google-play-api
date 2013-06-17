@@ -1,5 +1,6 @@
 from gp import Search
 
+# output file
 FILENAME = "search.txt"
 
 fpi = open(FILENAME, "a")   # append to file
