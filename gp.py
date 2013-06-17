@@ -57,7 +57,9 @@ class App(object):  # App class is used to hold information about an individual 
 
             if len(a) > 0:
                 for i in range(0, len(a)):
-                    self._permission_list.append(a[i].contents[0])
+                    self._permission_list.append(str(a[i].contents[0]))
+
+        self._permission_list.sort()
 
 
 class Page(object):  # page class to hold page of apps
@@ -120,27 +122,19 @@ class Search(object):   # search class is used to hold the search (interacts wit
 
     def compare_page(self, page):
         # TODO redo this crap
+        full = self.get_page(page)
+        '''
+            1 get all the unique values
+            2 using unique array count array with everything
+
+            #1 containing similarities
+            #1 containing differences
 
         '''
 
-            1 containing similarities
-            1 containing differences
+        list = []
 
-        '''
+        for app in range(0,24):
+            list.extend(full[app].get_permission())
 
-        h = list(self.get_page(page))
-        first = list(self.get_page(page)[0].get_permission())
-        kd = set(first)
-
-        aa = set(h)
-        print kd
-        print aa
-        # print "The first app has permissions\n"
-        # print aa[0]
-        print "\nThe similarities\n"
-        for x in range(1, 24):
-            print aa.intersection(kd)  # finds likes
-
-        print "\nThe differences\n"
-        for x in range(1, 24):
-            print aa.union(self.page.get_all_apps()[x]) - aa.intersection(self.page.get_all_apps()[x])
+        print list
