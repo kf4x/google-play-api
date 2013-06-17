@@ -1,5 +1,7 @@
 from BeautifulSoup import BeautifulSoup
 from util import *
+import collections
+
 
 __author__ = 'Javier'
 
@@ -121,20 +123,14 @@ class Search(object):   # search class is used to hold the search (interacts wit
         return self.page.HTML
 
     def compare_page(self, page):
-        # TODO redo this crap
+        # using http://docs.python.org/2/library/collections.html
         full = self.get_page(page)
-        '''
-            1 get all the unique values
-            2 using unique array count array with everything
-
-            #1 containing similarities
-            #1 containing differences
-
-        '''
 
         list = []
 
         for app in range(0,24):
             list.extend(full[app].get_permission())
 
-        print list
+        return collections.Counter(list)
+
+
