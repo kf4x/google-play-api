@@ -37,4 +37,6 @@ If you would like to see all the apps with there permissions(24apps/page)
 for app_num in range(0,24):
     print page[app_num].get_name(), page[app_num].get_permission()
 ```
+### Examples
+Look at the [examples](https://github.com/javierchavez/google-play-api/tree/master/examples) folder.
 
