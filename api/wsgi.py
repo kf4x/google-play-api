@@ -31,7 +31,7 @@ def s_apps():
     #iterate through the apps on page 2. there are 24 apps/page
     for a in range(0,24):
 
-        app_array.append({'name': page[a].get_name(), 'permissions' : page[a].get_permission()})
+        app_array.append({'name': page[a].get_name(), 'permissions': page[a].get_permission()})
         # app_data.clear()
         # print page[a].get_name(), page[a].get_permission()
 
