@@ -99,17 +99,6 @@ class App(object):
         # return permissions
         return [str(item.contents[0]) for item in items]
 
-# ['full network access', 'view network connections', 'view Wi-Fi connections', 'receive data from Internet', 'read phone status and identity', 'allow Wi-Fi Multicast reception', 'prevent device from sleeping', 'retrieve running apps', 'pair with Bluetooth devices']
-
-
-# apps = App(1, gpkw.terms[7])
-
-# print apps.get_all_app_titles()[0]
-# print apps.get_permissions(apps.get_all_app_urls()[0])
-# print apps.get_all_app_urls()[23]
-# print apps.get_all_app_titles()[23]
-# print apps.get_permissions(apps.get_all_app_urls()[23])
-# print apps.get_all_app_titles()
 f = open('apps.json', 'a')
 
 apps_array = []
