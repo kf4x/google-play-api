@@ -52,7 +52,7 @@
         <script>
             $(document).ready(function() {
                 $('.search-field').simpleJekyllSearch({
-                    jsonFile : '/search.json',
+                    jsonFile : 'http://javierchavez.github.io/google-play-api/search.json',
                     jsonFormat : 'search-term,package-id,name,permissions',
                     template : '<a href="https://play.google.com/store/apps/details?id={package-id}" title="{name}" class="app-name">{name}</a><br>{permissions}',
                     searchResults : '.results'
