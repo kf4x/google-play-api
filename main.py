@@ -92,28 +92,30 @@ class App(object):
         mystring = mystring[:(len(mystring)-_end)+15]
         # end - trim
 
-        # get permissions
-        soup = BeautifulSoup(mystring)
-        items = soup('div', {'class': 'perm-description'})
+        # get permissions THIS IS RENDERED IN HTML no longer need to remove div tags
+        # soup = BeautifulSoup(mystring)
+        # items = soup('div', {'class': 'perm-description'})
 
         # return permissions
-        return [str(item.contents[0]) for item in items]
+        return mystring
 
 f = open('apps.json', 'a')
 
 apps_array = []
 
 for index in range(0, 100):
-    f.write(gpkw.terms[index] + "\n")
+
     for page in range(0, 3):
         apps = App(page, gpkw.terms[index])
         # print gpkw.terms[index]
         for app in range(0, len(apps.get_all_app_titles())):
-            print app
-            # print "\t" + apps.get_all_app_titles()[app] + "(" + apps.get_all_app_ids(apps.get_all_app_urls())[app] + ")"
-            f.write("\t" + apps.get_all_app_titles()[app].encode('ascii', 'ignore') + "(" + apps.get_all_app_ids(apps.get_all_app_urls())[app] + ")\n")
-            for x in apps.get_permissions(apps.get_all_app_urls()[app]):
-                # print "\t\t" + x
-                f.write("\t\t" + x+"\n")
+            apps_array.append({"search-term": gpkw.terms[index],
+                               "name": apps.get_all_app_titles()[app],
+                               "package-id": apps.get_all_app_ids(apps.get_all_app_urls())[app],
+                               "permissions": apps.get_permissions(apps.get_all_app_urls()[app])})
+
+f.write(json.dumps(apps_array, indent=4))
+# test output
+# print json.dumps(apps_array, indent=4)
 
 # TODO-format "keyword" -> [list of package names in rank order] -> [list of permissions for each package, as a messy string]
