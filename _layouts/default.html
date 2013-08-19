@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Javier">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>App Search</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="/js/simpleJekyllSearch.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li class="active"><a href="#">Home</a></li>
+            <!--<li><a href="#">Contact</a></li>-->
+            <li><a data-toggle="modal" href="#myModal" href="#">About</a></li>
+            <!--<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Launch demo modal</a>-->
+        </ul>
+        <h3 class="text-muted">Android Permission Search</h3>
+    </div>
+
+    <div class="jumbotron">
+        <h1>App Info</h1>
+        <p class="lead">Search for an Android app you use the most and look what you gave it access to.</p>
+        <!--<p><a class="btn btn-lg btn-success" href="#">Sign up today</a></p>-->
+
+    </div>
+
+    {{content}}
+
+    <div class="footer">
+        <p>&copy; Javier 2013</p>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">About</h4>
+                </div>
+                <div class="modal-body">
+
+                    <h4>Site</h4>
+                    <p>
+                        Site is built with Jekyll with Twitter bootstrap v.3
+                    </p>
+
+                    <h4>Data</h4>
+                    <p>
+                        All permissions and data about the apps where obtained Aug 19, 2013.
+                        <br>
+                        The data was gathered based on search terms deemed popular by <a href="http://searchengineland.com/the-most-popular-app-store-keywords-from-chomp-google-play-135744">http://searchengineland.com/</a> which was then scraped from Google Play Store.
+
+                    </p>
+                    <hr>
+                    <p>By <a href="http://twitter.com/_javierc">@_javierc</a></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div> <!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-wip/js/bootstrap.min.js"></script>
+</body>
+</html>
