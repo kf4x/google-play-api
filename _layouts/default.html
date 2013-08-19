@@ -18,7 +18,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
-    <script type="text/javascript" src="http://javierchavez.github.io/google-play-api/js/simpleJekyllSearch.js"></script>
+    <script type="text/javascript" src="/js/simpleJekyllSearch.js"></script>
 </head>
 
 <body>
@@ -41,7 +41,32 @@
 
     </div>
 
-    {{content}}
+    <div class="container">
+
+        <!--<input type="text" class="search-field" placeholder="Search for articles (e.g. type 'Jekyll')">-->
+        <!--<div class="results"></div>-->
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Search</h2>
+            <input type="text" class="form-control search-field" placeholder="Start typing" autofocus>
+        </form>
+        <script>
+            $(document).ready(function() {
+                $('.search-field').simpleJekyllSearch({
+                    jsonFile : '/search.json',
+                    jsonFormat : 'search-term,package-id,name,permissions',
+                    template : '<a href="https://play.google.com/store/apps/details?id={package-id}" title="{name}" class="app-name">{name}</a><br>{permissions}',
+                    searchResults : '.results'
+                });
+            });
+        </script>
+
+
+    </div> <!-- /container -->
+
+
+    <div class="row marketing results">
+
+    </div>
 
     <div class="footer">
         <p>&copy; Javier 2013</p>
