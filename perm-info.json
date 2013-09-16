@@ -1,0 +1,860 @@
+{
+    "name": "apps",
+    "children": [
+        {
+            "name": "app1",
+            "children": [
+                {
+                    "name": "full network access",
+                    "size": 4451
+                }
+            ]
+        },
+        {
+            "name": "app2",
+            "children": [
+                {
+                    "name": "view network connections",
+                    "size": 4016
+                }
+            ]
+        },
+        {
+            "name": "app3",
+            "children": [
+                {
+                    "name": "modify or delete the contents of your USB storage",
+                    "size": 3222
+                }
+            ]
+        },
+        {
+            "name": "app4",
+            "children": [
+                {
+                    "name": "read phone status and identity",
+                    "size": 2617
+                }
+            ]
+        },
+        {
+            "name": "app5",
+            "children": [
+                {
+                    "name": "view Wi-Fi connections",
+                    "size": 1779
+                }
+            ]
+        },
+        {
+            "name": "app6",
+            "children": [
+                {
+                    "name": "approximate location (network-based)",
+                    "size": 1418
+                }
+            ]
+        },
+        {
+            "name": "app7",
+            "children": [
+                {
+                    "name": "precise location (GPS and network-based)",
+                    "size": 1212
+                }
+            ]
+        },
+        {
+            "name": "app8",
+            "children": [
+                {
+                    "name": "receive data from Internet",
+                    "size": 799
+                }
+            ]
+        },
+        {
+            "name": "app9",
+            "children": [
+                {
+                    "name": "install shortcuts",
+                    "size": 773
+                }
+            ]
+        },
+        {
+            "name": "app10",
+            "children": [
+                {
+                    "name": "test access to protected storage",
+                    "size": 646
+                }
+            ]
+        },
+        {
+            "name": "app11",
+            "children": [
+                {
+                    "name": "read your contacts",
+                    "size": 604
+                }
+            ]
+        },
+        {
+            "name": "app12",
+            "children": [
+                {
+                    "name": "retrieve running apps",
+                    "size": 539
+                }
+            ]
+        },
+        {
+            "name": "app13",
+            "children": [
+                {
+                    "name": "take pictures and videos",
+                    "size": 534
+                }
+            ]
+        },
+        {
+            "name": "app14",
+            "children": [
+                {
+                    "name": "record audio",
+                    "size": 428
+                }
+            ]
+        },
+        {
+            "name": "app15",
+            "children": [
+                {
+                    "name": "read call log",
+                    "size": 406
+                }
+            ]
+        },
+        {
+            "name": "app16",
+            "children": [
+                {
+                    "name": "read your Web bookmarks and history",
+                    "size": 328
+                }
+            ]
+        },
+        {
+            "name": "app17",
+            "children": [
+                {
+                    "name": "find accounts on the device",
+                    "size": 308
+                }
+            ]
+        },
+        {
+            "name": "app18",
+            "children": [
+                {
+                    "name": "uninstall shortcuts",
+                    "size": 303
+                }
+            ]
+        },
+        {
+            "name": "app19",
+            "children": [
+                {
+                    "name": "modify your contacts",
+                    "size": 294
+                }
+            ]
+        },
+        {
+            "name": "app20",
+            "children": [
+                {
+                    "name": "run at startup",
+                    "size": 289
+                }
+            ]
+        },
+        {
+            "name": "app21",
+            "children": [
+                {
+                    "name": "connect and disconnect from Wi-Fi",
+                    "size": 279
+                }
+            ]
+        },
+        {
+            "name": "app22",
+            "children": [
+                {
+                    "name": "read Home settings and shortcuts",
+                    "size": 261
+                }
+            ]
+        },
+        {
+            "name": "app23",
+            "children": [
+                {
+                    "name": "draw over other apps",
+                    "size": 257
+                }
+            ]
+        },
+        {
+            "name": "app24",
+            "children": [
+                {
+                    "name": "write web bookmarks and history",
+                    "size": 254
+                }
+            ]
+        },
+        {
+            "name": "app25",
+            "children": [
+                {
+                    "name": "use accounts on the device",
+                    "size": 253
+                }
+            ]
+        },
+        {
+            "name": "app26",
+            "children": [
+                {
+                    "name": "add or remove accounts",
+                    "size": 231
+                }
+            ]
+        },
+        {
+            "name": "app27",
+            "children": [
+                {
+                    "name": "directly call phone numbers",
+                    "size": 218
+                }
+            ]
+        },
+        {
+            "name": "app28",
+            "children": [
+                {
+                    "name": "write call log",
+                    "size": 203
+                }
+            ]
+        },
+        {
+            "name": "app29",
+            "children": [
+                {
+                    "name": "disable your screen lock",
+                    "size": 195
+                }
+            ]
+        },
+        {
+            "name": "app30",
+            "children": [
+                {
+                    "name": "access extra location provider commands",
+                    "size": 191
+                }
+            ]
+        },
+        {
+            "name": "app31",
+            "children": [
+                {
+                    "name": "Google Play license check",
+                    "size": 178
+                }
+            ]
+        },
+        {
+            "name": "app32",
+            "children": [
+                {
+                    "name": "receive text messages (SMS)",
+                    "size": 168
+                }
+            ]
+        },
+        {
+            "name": "app33",
+            "children": [
+                {
+                    "name": "send SMS messages",
+                    "size": 168
+                }
+            ]
+        },
+        {
+            "name": "app34",
+            "children": [
+                {
+                    "name": "pair with Bluetooth devices",
+                    "size": 161
+                }
+            ]
+        },
+        {
+            "name": "app35",
+            "children": [
+                {
+                    "name": "create accounts and set passwords",
+                    "size": 159
+                }
+            ]
+        },
+        {
+            "name": "app36",
+            "children": [
+                {
+                    "name": "modify system settings",
+                    "size": 148
+                }
+            ]
+        },
+        {
+            "name": "app37",
+            "children": [
+                {
+                    "name": "read your text messages (SMS or MMS)",
+                    "size": 127
+                }
+            ]
+        },
+        {
+            "name": "app38",
+            "children": [
+                {
+                    "name": "change network connectivity",
+                    "size": 113
+                }
+            ]
+        },
+        {
+            "name": "app39",
+            "children": [
+                {
+                    "name": "write Home settings and shortcuts",
+                    "size": 92
+                }
+            ]
+        },
+        {
+            "name": "app40",
+            "children": [
+                {
+                    "name": "read calendar events plus confidential information",
+                    "size": 89
+                }
+            ]
+        },
+        {
+            "name": "app41",
+            "children": [
+                {
+                    "name": "control Near Field Communication",
+                    "size": 77
+                }
+            ]
+        },
+        {
+            "name": "app42",
+            "children": [
+                {
+                    "name": "add or modify calendar events and send email to guests without owners' knowledge",
+                    "size": 74
+                }
+            ]
+        },
+        {
+            "name": "app43",
+            "children": [
+                {
+                    "name": "close other apps",
+                    "size": 72
+                }
+            ]
+        },
+        {
+            "name": "app44",
+            "children": [
+                {
+                    "name": "allow Wi-Fi Multicast reception",
+                    "size": 71
+                }
+            ]
+        },
+        {
+            "name": "app45",
+            "children": [
+                {
+                    "name": "read Google service configuration",
+                    "size": 68
+                }
+            ]
+        },
+        {
+            "name": "app46",
+            "children": [
+                {
+                    "name": "edit your text messages (SMS or MMS)",
+                    "size": 65
+                }
+            ]
+        },
+        {
+            "name": "app47",
+            "children": [
+                {
+                    "name": "access Bluetooth settings",
+                    "size": 62
+                }
+            ]
+        },
+        {
+            "name": "app48",
+            "children": [
+                {
+                    "name": "read your own contact card",
+                    "size": 60
+                }
+            ]
+        },
+        {
+            "name": "app49",
+            "children": [
+                {
+                    "name": "send sticky broadcast",
+                    "size": 51
+                }
+            ]
+        },
+        {
+            "name": "app50",
+            "children": [
+                {
+                    "name": "prevent device from sleeping",
+                    "size": 50
+                }
+            ]
+        },
+        {
+            "name": "app51",
+            "children": [
+                {
+                    "name": "mock location sources for testing",
+                    "size": 49
+                }
+            ]
+        },
+        {
+            "name": "app52",
+            "children": [
+                {
+                    "name": "reroute outgoing calls",
+                    "size": 46
+                }
+            ]
+        },
+        {
+            "name": "app53",
+            "children": [
+                {
+                    "name": "receive text messages (MMS)",
+                    "size": 34
+                }
+            ]
+        },
+        {
+            "name": "app54",
+            "children": [
+                {
+                    "name": "read battery statistics",
+                    "size": 33
+                }
+            ]
+        },
+        {
+            "name": "app55",
+            "children": [
+                {
+                    "name": "access USB storage filesystem",
+                    "size": 33
+                }
+            ]
+        },
+        {
+            "name": "app56",
+            "children": [
+                {
+                    "name": "read terms you added to the dictionary",
+                    "size": 31
+                }
+            ]
+        },
+        {
+            "name": "app57",
+            "children": [
+                {
+                    "name": "control vibration",
+                    "size": 29
+                }
+            ]
+        },
+        {
+            "name": "app58",
+            "children": [
+                {
+                    "name": "download files without notification",
+                    "size": 27
+                }
+            ]
+        },
+        {
+            "name": "app59",
+            "children": [
+                {
+                    "name": "modify phone state",
+                    "size": 21
+                }
+            ]
+        },
+        {
+            "name": "app60",
+            "children": [
+                {
+                    "name": "Read email attachments",
+                    "size": 19
+                }
+            ]
+        },
+        {
+            "name": "app61",
+            "children": [
+                {
+                    "name": "act as the AccountManagerService",
+                    "size": 19
+                }
+            ]
+        },
+        {
+            "name": "app62",
+            "children": [
+                {
+                    "name": "read subscribed feeds",
+                    "size": 16
+                }
+            ]
+        },
+        {
+            "name": "app63",
+            "children": [
+                {
+                    "name": "write subscribed feeds",
+                    "size": 16
+                }
+            ]
+        },
+        {
+            "name": "app64",
+            "children": [
+                {
+                    "name": "set preferred apps",
+                    "size": 15
+                }
+            ]
+        },
+        {
+            "name": "app65",
+            "children": [
+                {
+                    "name": "reorder running apps",
+                    "size": 15
+                }
+            ]
+        },
+        {
+            "name": "app66",
+            "children": [
+                {
+                    "name": "view configured accounts",
+                    "size": 14
+                }
+            ]
+        },
+        {
+            "name": "app67",
+            "children": [
+                {
+                    "name": "delete all app cache data",
+                    "size": 12
+                }
+            ]
+        },
+        {
+            "name": "app68",
+            "children": [
+                {
+                    "name": "read Gmail",
+                    "size": 12
+                }
+            ]
+        },
+        {
+            "name": "app69",
+            "children": [
+                {
+                    "name": "read instant messages",
+                    "size": 11
+                }
+            ]
+        },
+        {
+            "name": "app70",
+            "children": [
+                {
+                    "name": "change/intercept network settings and traffic",
+                    "size": 10
+                }
+            ]
+        },
+        {
+            "name": "app71",
+            "children": [
+                {
+                    "name": "access mail information",
+                    "size": 10
+                }
+            ]
+        },
+        {
+            "name": "app72",
+            "children": [
+                {
+                    "name": "write to your social stream",
+                    "size": 9
+                }
+            ]
+        },
+        {
+            "name": "app73",
+            "children": [
+                {
+                    "name": "read your social stream",
+                    "size": 9
+                }
+            ]
+        },
+        {
+            "name": "app74",
+            "children": [
+                {
+                    "name": "measure app storage space",
+                    "size": 7
+                }
+            ]
+        },
+        {
+            "name": "app75",
+            "children": [
+                {
+                    "name": "erase USB storage",
+                    "size": 6
+                }
+            ]
+        },
+        {
+            "name": "app76",
+            "children": [
+                {
+                    "name": "make app always run",
+                    "size": 5
+                }
+            ]
+        },
+        {
+            "name": "app77",
+            "children": [
+                {
+                    "name": "receive text messages (WAP)",
+                    "size": 5
+                }
+            ]
+        },
+        {
+            "name": "app78",
+            "children": [
+                {
+                    "name": "YouTube",
+                    "size": 4
+                }
+            ]
+        },
+        {
+            "name": "app79",
+            "children": [
+                {
+                    "name": "send SMS-received broadcast",
+                    "size": 4
+                }
+            ]
+        },
+        {
+            "name": "app80",
+            "children": [
+                {
+                    "name": "YouTube usernames",
+                    "size": 4
+                }
+            ]
+        },
+        {
+            "name": "app81",
+            "children": [
+                {
+                    "name": "Google mail",
+                    "size": 4
+                }
+            ]
+        },
+        {
+            "name": "app82",
+            "children": [
+                {
+                    "name": "make/receive Internet calls",
+                    "size": 4
+                }
+            ]
+        },
+        {
+            "name": "app83",
+            "children": [
+                {
+                    "name": "modify/delete internal media storage contents",
+                    "size": 2
+                }
+            ]
+        },
+        {
+            "name": "app84",
+            "children": [
+                {
+                    "name": "Google Finance",
+                    "size": 2
+                }
+            ]
+        },
+        {
+            "name": "app85",
+            "children": [
+                {
+                    "name": "Exchanges messages and receives sync notifications from Google servers.",
+                    "size": 2
+                }
+            ]
+        },
+        {
+            "name": "app86",
+            "children": [
+                {
+                    "name": "Google Voice",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app87",
+            "children": [
+                {
+                    "name": "access all Google services",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app88",
+            "children": [
+                {
+                    "name": "Send Gmail",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app89",
+            "children": [
+                {
+                    "name": "Google Spreadsheets",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app90",
+            "children": [
+                {
+                    "name": "contacts data in Google accounts",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app91",
+            "children": [
+                {
+                    "name": "Google Docs",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app92",
+            "children": [
+                {
+                    "name": "send package removed broadcast",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app93",
+            "children": [
+                {
+                    "name": "modify your own contact card",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app94",
+            "children": [
+                {
+                    "name": "access other Google services",
+                    "size": 1
+                }
+            ]
+        },
+        {
+            "name": "app95",
+            "children": [
+                {
+                    "name": "add voicemail",
+                    "size": 1
+                }
+            ]
+        }
+    ]
+}
