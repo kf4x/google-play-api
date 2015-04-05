@@ -1,6 +1,6 @@
 *.pyc
 .idea/
-
+testing/
 
 # OS generated files #
 ######################
