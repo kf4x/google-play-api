@@ -1,10 +1,12 @@
-__author__="javier"
-
 import requests
 from requests import Session
 from requests.cookies import cookiejar_from_dict
 from bs4 import BeautifulSoup, SoupStrainer
 import pycurl
+
+
+__author__ = "Javier Chavez"
+
 
 _URL = "https://play.google.com/store/getreviews"
 _USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
@@ -17,7 +19,19 @@ _CONTENT_TYPE = "application/x-www-form-urlencoded;charset=UTF-8"
 _ORIGIN = "https://play.google.com"
 
 # These are the cookies you need to supply
-_COOKIE = {"SSID":"", "SID":"", "SAPISID":"", "PREF":"", "PLAY_PREFS":"", "PLAY_ACTIVE_ACCOUNT":"", "OGPC":"", "NID":"", "HSID":"", "APISID":"", "_gat":"", "_ga":""}
+_COOKIE = { "SSID": "",
+            "SID": "",
+            "SAPISID": "",
+            "PREF": "",
+            "PLAY_PREFS": "",
+            "PLAY_ACTIVE_ACCOUNT": "",
+            "OGPC": "",
+            "NID": "",
+            "HSID": "",
+            "APISID": "",
+            "_gat": "",
+            "_ga": ""
+}
 
 
 def memoize(f):
