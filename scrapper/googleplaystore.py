@@ -96,7 +96,7 @@ class App(object):
     
         for key, value in kwargs.items():
             setattr(self, key, value)
-
+        # preappending host
         self.url = 'https://play.google.com' + self.url
         self._fill_data()
 
@@ -163,7 +163,10 @@ class App(object):
 
             if fnd in meta_map:
                 setattr(self, meta_map[fnd], val)
-            
+
+        # need to add ratings
+        # reviews-num
+        # rating-histogram
         
         
     def attrs(self):
@@ -174,22 +177,6 @@ class App(object):
 
     def __repr__(self):
         return self.__str__()
-
-
-class GoogleRequest(object):
-    def __init__(self):
-         # setting defaults 
-        self.headers = {
-            "accept", _ACCEPT, 
-            "accept-encoding", _ACCEPT_ENCODING,
-            "accept-language", _ACCEPT_LANGUAGE,
-            "cache-connectiontrol", _CACHE_CONTROL,
-            "connectiontent-length", _CONTENT_LENGTH,
-            "content-type", _CONTENT_TYPE,
-            "origin", _ORIGIN,
-            "pragma", _CACHE_CONTROL,
-            "user-agent", _USER_AGENT
-        }
 
     
 class PlayStore(Session):
