@@ -73,6 +73,11 @@ class Search(object):
     def __repr__(self):
         return self.__str__()
 
+meta_map = {
+    'Installs': 'installs',
+    ' Developer ': 'dev',
+}
+
     
 class App(object):
     """App as object
@@ -84,18 +89,30 @@ class App(object):
         self.name = ''
         self.dev = ''
         self.app_id = ''
-        self.downloads = ''
         self.description = ''
-        self.downloads = ''
+        self.installs = ''
         self.total_ratings = ''
         self.permissions = []
     
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+        self.url = 'https://play.google.com' + self.url
+        self._fill_data()
+
+        
     def get_permissions(self):
+        if self.permissions:
+            return self.permissions
+
+        if not self.app_id or not self.session.header_que or not self.session.cookie_que:
+            raise Exception("You need proper app_id, headers, and cookie!")
+        
+        print('Requesting premissions from google')
+    
         url = 'https://play.google.com/store/getdevicepermissions?authuser=0'
         ref = {'Referer':'https://play.google.com/store/apps/details?id='+self.app_id}
+        
         
         cookies = self.session.cookie_que.copy()
         requests.utils.add_dict_to_cookiejar(self.session.cookies, cookies)
@@ -120,10 +137,34 @@ class App(object):
 
         soup = BeautifulSoup(safe_content)
         items = soup('div', {'class': 'perm-description'})
-        
+        self.permissions = [str(item.contents[0]) for item in items]
         #return permissions
-        return [str(item.contents[0]) for item in items]
-    
+        return self.permissions
+
+    def _fill_data(self):
+        html = self.session.get(self.url)
+        
+        soup = BeautifulSoup(html.content.decode('unicode-escape'))
+        self.description = soup('div', {'class': 'id-app-orig-desc'})[0].contents
+
+        details_section = soup.find_all('div', {'class': 'meta-info'})
+        # for every detail there is 1 div (wrapper) with 2 sub divs (title, content)
+        
+        for div in details_section:
+            # using fild all to ensure type is preserved
+            fnd = ''
+            val = ''
+            for child in div.find_all('div'):
+                
+                if 'title' in child.get('class'):
+                    fnd = child.text
+                if 'content' in child.get('class'):
+                    val = child.text
+
+            if fnd in meta_map:
+                setattr(self, meta_map[fnd], val)
+            
+        
         
     def attrs(self):
         return self.__dict__
