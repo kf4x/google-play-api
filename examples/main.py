@@ -2,7 +2,7 @@ import googleplaystore
 import json
 cookie = {"SSID":"",
           "SID":"",
-          "SAPISID":"/AID7mn_K4ezijGt0X"
+          "SAPISID":""
           "PREF":"",
           "PLAY_PREFS":"",
           "PLAY_ACTIVE_ACCOUNT":"",
@@ -19,14 +19,16 @@ ps = googleplaystore.PlayStore(cookie=cookie, token=token)
 search = ps.search('twitter')
 # return an array of Apps
 all_apps = search.get_page()
+# get a single app
+app = all_apps[0]
 
-twi = all_apps[0]
-print twi
+# show the string representation of the app
+print app
 
-#print all the permissions
-print json.dumps(twi.get_permissions(), indent=3)
+# print all the permissions
+print json.dumps(app.get_permissions(), indent=3)
 
 # print app as dictionary
-print twi.attrs()
+print app.to_dict()
 
 

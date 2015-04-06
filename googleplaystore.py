@@ -46,6 +46,10 @@ def memoize(f):
 
 class Search(object):
     """Search API- search the playstore for an app.
+    Attributes:
+        session: requests Session object to be used to search the app store
+        key_word: A string word(s) that will be used as the search term 
+    
     """
 
     def __init__(self, session, key_word='',page=1):
@@ -56,9 +60,11 @@ class Search(object):
             
         
     def get_page(self):
-        """Return all the apps from the given page
+        """Get  all the apps from the page
         
-        return [App, App]
+        Returns:
+            An array filled with App objects
+            [Twitter, Facebook]
         """
         apps = []
         for app in self.bs_links:
@@ -71,6 +77,16 @@ class Search(object):
             
         return apps
 
+    def search(self, key_word, page=1):
+        """ Search and return apps from search
+        
+        Returns:
+            An array filled with App objects
+            [Twitter, Facebook]
+        """
+        self._search(key_word, page)
+        return self.get_page()
+    
     def _search(self, key_word, page=1):
         url= "https://play.google.com/store/search?q=" + key_word + "&c=apps" + "&start=" + str((page-1)*24) + "&num=24"
         
@@ -89,6 +105,7 @@ class Search(object):
     def __repr__(self):
         return self.__str__()
 
+# get rid of this
 meta_map = {
     'Installs': 'installs',
     ' Developer ': 'dev',
@@ -202,7 +219,9 @@ class App(object):
         self.total_ratings = soup.find('span', {'class': 'reviews-num'}).contents[0]
         # self.score = soup('div', {'class': 'score'})[0].contents
         details_section = soup.find_all('div', {'class': 'meta-info'})
-        # for every detail there is 1 div (wrapper) with 2 sub divs (title, content)
+
+        # get all the tags that has attribute itemprop and
+        # the value of itemprop is in item_props list
         all_meta = soup(lambda tag: 'itemprop' in tag.attrs and
                         dict(tag.attrs)['itemprop'] in item_props)
         
@@ -301,8 +320,7 @@ class PlayStore(Session):
         }
         
     def search(self, kw, pg=1):
-        """
-        Returns a new search object
+        """Returns a new search object
         """
         return Search(self, kw, pg)
         
