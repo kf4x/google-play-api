@@ -2,8 +2,6 @@ import requests
 from requests import Session
 from requests.cookies import cookiejar_from_dict
 from bs4 import BeautifulSoup, SoupStrainer
-import pycurl
-
 
 __author__ = "Javier Chavez"
 
@@ -183,7 +181,7 @@ class App(object):
         # rating-histogram
         
         
-    def attrs(self):
+    def to_dict(self):
         return self.__dict__
 
     def __str__(self):
@@ -242,4 +240,3 @@ class PlayStore(Session):
         return Search(self, kw, pg)
         
 
-    
