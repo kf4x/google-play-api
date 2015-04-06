@@ -118,7 +118,7 @@ class App(object):
             return self.permissions
 
         if not self.app_id or not self.session.header_que or not self.session.cookie_que:
-            raise Exception("You need proper app_id, headers, and cookie!")
+            raise Exception('You need proper app_id, headers, and cookie!')
         
         print('Requesting premissions from google')
     
@@ -138,6 +138,9 @@ class App(object):
         data = self.session.post(url=url,
                                  headers=headers,
                                  data=payload)
+
+    
+        print("status code: " + str(data.status_code))
         
         safe_content = data.content.decode('unicode-escape')
 
