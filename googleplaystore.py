@@ -18,24 +18,6 @@ _CONTENT_LENGTH = "129"
 _CONTENT_TYPE = "application/x-www-form-urlencoded;charset=UTF-8"
 _ORIGIN = "https://play.google.com"
 
-# These are the cookies you need to supply
-# need to make this anon
-
-# curl 'https://play.google.com/store/xhr/getdoc?authuser=0'
-# -H 'origin: https://play.google.com'
-# -H 'dnt: 1'
-# -H 'accept-encoding: gzip, deflate'
-# -H 'accept-language: en-US,en;q=0.8'
-# -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36'
-# -H 'content-type: application/x-www-form-urlencoded;charset=UTF-8'
-# -H 'accept: */*'
-# -H 'referer: https://play.google.com/store/apps/details?id=com.twitter.android'
-# -H 'authority: play.google.com'
-# -H 'cookie: PLAY_PREFS=ChYIABISCgJVUxDrpoqSySko7KaKkskp:S:ANO1ljL40GH6jkFbYw; 
-#             NID=67=pztc4tOTvcbRMpxe3jiPZcxRP1AZcm95-EQwHHf9pMsyRGZdAmYwTIk0Xpk4LEj3zg_IXwoxkaVtiRGSYfvvrUPsTHTxyMYddKZ4ub51fRQhP_iNdsckDR7X8h6uqTmy; 
-#             _ga=GA1.3.1326738868.1428382982; 
-#             _gat=1'
-# --data 'ids=com.twitter.android&xhr=1'
 
 
 _COOKIE = { "SSID": "",
@@ -210,14 +192,15 @@ class App(object):
         _arr = _arr.replace(", ,", ",None,")
         _arr = _arr.replace(",,", ",None,")
         _arr = _arr.replace("[,", "[None,")
-        _arr = _arr.replace("\n", " ")
+        _arr = _arr.replace('\r',' ').replace('\n',' ')
         _arr = _arr.replace('\\"', "\u0027")
-        _app_array = ast.literal_eval(_arr.decode('unicode-escape'))
+        _app_array = ast.literal_eval(_arr)
+    
         _app_obj = _app_array[0][2][0][55]
-        print(_app_obj[_app_obj.keys()[0]])
+        print(_app_obj[_app_obj.keys()[0]][1])
         # omg that worked
         # print json string from python object
-        # print(json.dumps(_app_array, indent=4))
+        print(json.dumps(_app_array, indent=4))
         
         return
         safe_content = data.content.decode('unicode-escape')

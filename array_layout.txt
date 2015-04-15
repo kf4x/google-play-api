@@ -92,22 +92,40 @@ it is sort of structured similar to the publishing platform
 	55 {} object with a single key
 	   "key":[]
 		0 [ dev, apps by]
-		1 permissions
+		1 [permissions]
+		  0 [] common permissions
+		    0 catagory of common perm
+		      0 ... null
+		      1 [ perm ]
+		      	0 name
+			1 description
+                      2 category name ['', 'app hist', '', 'identity','','contacts',
+		      		      'location', 'sms', '', 'files', 'camera',
+				      'microphone', 'wifi', 'divice id']			
+			
+		  1 [] other
+		  2 [] custom
 		2 pub date
-		3 3 ???
-		4 ...
+		3 maturyity [everyone, low, med, high]
+		4 string size
 		5 string download lower range
 		6 string download upper
-		7 ...
+		7 string version 
 		8 1
-		9 ..
+		9 string android min version
 		10 ..
 		11 [ updates strings ]
 		12 faq url
 		13 priv policy url
 		14 dev email
+		15 ...
+		16 ...
+		17 ...
+		18 1 ...
+		19 physical addr
+		20 string inapp purchases 
 	
 	
 	
 	
-	
+       
