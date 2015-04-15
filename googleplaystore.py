@@ -2,7 +2,7 @@ import requests
 from requests import Session
 from requests.cookies import cookiejar_from_dict
 from bs4 import BeautifulSoup, SoupStrainer
-
+import ast
 __author__ = "Javier Chavez"
 
 
@@ -17,6 +17,25 @@ _CONTENT_TYPE = "application/x-www-form-urlencoded;charset=UTF-8"
 _ORIGIN = "https://play.google.com"
 
 # These are the cookies you need to supply
+# need to make this anon
+
+# curl 'https://play.google.com/store/xhr/getdoc?authuser=0'
+# -H 'origin: https://play.google.com'
+# -H 'dnt: 1'
+# -H 'accept-encoding: gzip, deflate'
+# -H 'accept-language: en-US,en;q=0.8'
+# -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36'
+# -H 'content-type: application/x-www-form-urlencoded;charset=UTF-8'
+# -H 'accept: */*'
+# -H 'referer: https://play.google.com/store/apps/details?id=com.twitter.android'
+# -H 'authority: play.google.com'
+# -H 'cookie: PLAY_PREFS=ChYIABISCgJVUxDrpoqSySko7KaKkskp:S:ANO1ljL40GH6jkFbYw; 
+#             NID=67=pztc4tOTvcbRMpxe3jiPZcxRP1AZcm95-EQwHHf9pMsyRGZdAmYwTIk0Xpk4LEj3zg_IXwoxkaVtiRGSYfvvrUPsTHTxyMYddKZ4ub51fRQhP_iNdsckDR7X8h6uqTmy; 
+#             _ga=GA1.3.1326738868.1428382982; 
+#             _gat=1'
+# --data 'ids=com.twitter.android&xhr=1'
+
+
 _COOKIE = { "SSID": "",
             "SID": "",
             "SAPISID": "",
@@ -55,8 +74,9 @@ class Search(object):
     def __init__(self, session, key_word='',page=1):
         self.session = session
         self.key_word = key_word
+        self.bs_links = []
         if key_word:
-            self._search(key_word,page)
+            self._search(key_word, page)
             
         
     def get_page(self):
@@ -74,7 +94,6 @@ class Search(object):
                             key_word=self.key_word,
                             app_id=aid, url=app['href'],
                             name=app['title']))
-            
         return apps
 
     def search(self, key_word, page=1):
@@ -88,16 +107,16 @@ class Search(object):
         return self.get_page()
     
     def _search(self, key_word, page=1):
-        url= "https://play.google.com/store/search?q=" + key_word + "&c=apps" + "&start=" + str((page-1)*24) + "&num=24"
-        
+        #url= "https://play.google.com/store/search?q=" + key_word + "&c=apps" + "&start=" + str((page-1)*24) + "&num=24"
+        # no longer support pagination
+        url= "https://play.google.com/store/search?q=" + key_word + "&c=apps"
         req = self.session.get(url=url )
         soup = BeautifulSoup(req.content,
                                  parse_only=SoupStrainer('a', href=True))
     
-        # print(len(bs_links))
-        self.bs_links = soup.findAll('a', {'class': 'title'})
-        return self.get_page()
 
+        self.bs_links = soup.findAll('a', {'class': 'title'})
+        #print(len(self.bs_links))        
 
     def __str__(self):
         return "SearchObj"
@@ -127,18 +146,23 @@ class App(object):
         self.installs = ''
         self.total_ratings = ''
         self.permissions = []
-        self.score = ''
+        self.rating = ''
         self.key_word = ''
         self.screenshots = []
         self.image = ''
         self.price = ''
+        self.pub_date = ''
+        self.genre = ''
         
         for key, value in kwargs.items():
             setattr(self, key, value)
         # preappending host
         self.url = 'https://play.google.com' + self.url
-        self._fill_data()
 
+    def populate_fields(self):
+        self.get_permissions()
+        self.populate_data()
+        return True
         
     def get_permissions(self):
         """Get all the permissions for this app """
@@ -153,7 +177,8 @@ class App(object):
         # log
         print('Requesting premissions from google')
     
-        url = 'https://play.google.com/store/getdevicepermissions?authuser=0'
+        #url = 'https://play.google.com/store/getdevicepermissions?authuser=0'
+        url = 'https://play.google.com/store/xhr/getdoc?authuser=0'
         # setting referer for header 
         ref = {'Referer':'https://play.google.com/store/apps/details?id='+self.app_id}
 
@@ -165,7 +190,7 @@ class App(object):
         # add to header
         self.session.header_que.update(ref)
         # add to param
-        self.session.param_que.update({'id':str(self.app_id)})
+        self.session.param_que.update({'ids':str(self.app_id)})
         headers = self.session.header_que
         payload  = self.session.param_que
 
@@ -176,7 +201,14 @@ class App(object):
 
         # report status code
         print("status code: " + str(data.status_code))
+        _js = data.content#.decode('unicode-escape')
+        print('kdfj')
+        print(_js[6:-1])
+        print'end'
+
+        # json.loads()
         
+        return
         safe_content = data.content.decode('unicode-escape')
 
         _beg = str(safe_content).find('<div')
@@ -192,7 +224,7 @@ class App(object):
 
         return self.permissions
 
-    def _fill_data(self):
+    def populate_data(self):
         """Helper to set the rest of the attributes of the this app
         """
         item_props = [
@@ -208,18 +240,16 @@ class App(object):
             'topDeveloperBadgeUrl',
             'screenshot',
             'ratingValue',
-            'ratingCount'
+            'ratingCount',
+            'description'
         ]
         
         html = self.session.get(self.url)
         
         soup = BeautifulSoup(html.content.decode('unicode-escape'))
         # using find since it only returns a single obj
-        self.description = soup.find('div', {'itemprop': 'description'}).contents
-        self.total_ratings = soup.find('span', {'class': 'reviews-num'}).contents[0]
-        # self.score = soup('div', {'class': 'score'})[0].contents
-        details_section = soup.find_all('div', {'class': 'meta-info'})
-
+        # self.description = soup.find('div', {'itemprop': 'description'}).contents
+        
         # get all the tags that has attribute itemprop and
         # the value of itemprop is in item_props list
         all_meta = soup(lambda tag: 'itemprop' in tag.attrs and
@@ -228,46 +258,44 @@ class App(object):
         screenshots = []
         # todo need to make this more generic
         for x in all_meta:
+
             item = x.get('itemprop')
             if 'datePublished' in item:
-                print('date '+x.contents[0])
-            elif 'fileSize' in item:
-                print('filesize '+x.contents[0])
+                self.pub_date = x.contents[0]
+            # elif 'fileSize' in item:
+            #    print('filesize '+x.contents[0])
             elif 'numDownloads' in item:
-                print('downloads '+ x.contents[0])
+                self.installs = x.contents[0]
             elif 'image' in item:
-                images.append(x.get('src'))
+                self.image = x.get('src')
             elif 'screenshot' in item:
                 screenshots.append(x.get('src'))
-                    
-        
-        for div in details_section:
-            # using fild all to ensure type is preserved
-            fnd = ''
-            val = ''
-            for child in div.find_all('div'):
+            elif 'price' in item:
+                self.price = x.get('content')
+            elif 'genre' in item:
+                self.genre = x.contents[0]
+            elif 'ratingValue' in item:
+                self.rating = x.get('content')
+            elif 'ratingCount' in item:
+                self.total_ratings = x.get('content')
+            elif 'description' in item:
+                desc = x.find('div', {'class':'id-app-orig-desc'})
+                print type(desc)
+                self.description = ''
                 
-                if 'title' in child.get('class'):
-                    fnd = child.text
-                if 'content' in child.get('class'):
-                    val = child.text
+                
+            
 
-            if fnd in meta_map:
-                setattr(self, meta_map[fnd], val)
-
+        self.screenshots = screenshots
+        del screenshots
+        del all_meta
+        return True
         
     def to_dict(self):
-        return {
-            'name': self.name,
-            'package-id': self.app_id,
-            'developer': self.dev,
-            'description': self.description,
-            'installs': self.installs,
-            'total_ratings': self.total_ratings,
-            'score': self.score,
-            'perm': self.permissions,
-            'search-term': self.key_word
-        }
+        app_dict = self.__dict__
+        del app_dict['session']
+        return app_dict
+        
 
     def __str__(self):
         return self.name
@@ -295,28 +323,22 @@ class PlayStore(Session):
             "accept": _ACCEPT, 
             "accept-encoding": _ACCEPT_ENCODING,
             "accept-language": _ACCEPT_LANGUAGE,
-            "cache-connectiontrol": _CACHE_CONTROL,
             "content-length": _CONTENT_LENGTH,
             "content-type": _CONTENT_TYPE,
             "origin": _ORIGIN,
             "pragma": _CACHE_CONTROL,
+            "dnt": 1,
             "user-agent": _USER_AGENT
         }
 
         super(PlayStore, self).__init__()
 
     def set_creds(self, token='', cookie={}):
-        check = set(_COOKIE.keys()).intersection(cookie.keys())
-        if len(check) < len(_COOKIE.keys()) or token is None:
-            print('Without token AND cookie data, search will not properly work.')
-        
 
         # setting which will be used for permissions/reviews
         self.cookie_que = cookie
         self.param_que = {
             'xhr': 1,
-            'token': token,
-            'id': ''
         }
         
     def search(self, kw, pg=1):
