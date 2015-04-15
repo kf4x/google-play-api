@@ -3,6 +3,8 @@ from requests import Session
 from requests.cookies import cookiejar_from_dict
 from bs4 import BeautifulSoup, SoupStrainer
 import ast
+import json
+
 __author__ = "Javier Chavez"
 
 
@@ -202,11 +204,15 @@ class App(object):
         # report status code
         print("status code: " + str(data.status_code))
         _js = data.content#.decode('unicode-escape')
-        print('kdfj')
-        print(_js[6:-1])
-        print'end'
-
-        # json.loads()
+        reformed = _js[6:].replace(",,", ",None,")
+        reformed = reformed.replace(",, ", ",None,")
+        reformed = reformed.replace(", ,", ",None,")
+        reformed = reformed.replace(",,", ",None,")
+        reformed = reformed.replace("[,", "[None,")
+        reformed = reformed.replace("\n", " ")
+        app = ast.literal_eval(reformed)
+        # omg that worked
+        
         
         return
         safe_content = data.content.decode('unicode-escape')
