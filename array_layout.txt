@@ -1,0 +1,113 @@
+bit of a road map of what the hell g is doing with this array
+
+it is sort of structured similar to the publishing platform
+
+1st - wrapper?
+[i]
+
+2nd - "gdar" with i main array (another wrapper?)
+[x,x,[i]]
+
+3rd - i wrapper? 
+[x,x,[[i]]]
+
+	0 pkg id
+	1 pkg id
+	2,3 ...
+	4,5 url
+	6 url with host
+	7 market url
+	8 app name
+	9 app description
+	10 ...
+	11 [[image]]
+	   0 some id
+	   1,2,3 ...
+	   4 url
+	   5 ...
+	   6 url
+	   7 index of elem
+	   8 ... number 1?
+	12 ...
+	13 [[purchase details]] wrapper?
+	   0 pkg id
+	   1 pretty cost
+	   2 string?
+	   3 ...
+	   4 0? num
+	   5 0? num
+	   6 1? num
+	   7 ...
+	   8 url?
+	   9-14 ...
+	   15 0? num
+	   16-23 ...
+	   24 pretty cost
+	   25 currency
+	   26 'install'
+	   27 0 num
+	   28,29 ..
+	   30 "0"
+	   31,32 ..
+	   33 "currancy"
+	   34 0
+	14 [[category]] again wrapper
+	   0 "pretty name"
+	   1 url
+	15 [x,x] noidea there is not a wrapper
+	16 float rating
+	17 int total ratings
+	18 url logo
+	19 'apps'
+	20 [[images]] see 11
+	21 ...
+	22 string pretty total ratings 
+	23 string pretty score
+	24 [[[rating], [rating]]]
+	   [rating]
+		0 string total ratings at i+1
+		1 string percent ...
+	25 ...
+	26 [[x,[i]]]top developer info
+	27 pretty cost
+	28 []
+	29 []
+	30-35 ...
+	36 []
+	37, 38 ...
+	39 []
+	40 ...
+	41 string description
+	42 0 number
+	43-45 ..
+	46 []
+	47 ...
+	48 1
+	49 0
+	50 ...
+	51 0
+	52 ...
+	53 1 num
+	54 0
+	55 {} object with a single key
+	   "key":[]
+		0 [ dev, apps by]
+		1 permissions
+		2 pub date
+		3 3 ???
+		4 ...
+		5 string download lower range
+		6 string download upper
+		7 ...
+		8 1
+		9 ..
+		10 ..
+		11 [ updates strings ]
+		12 faq url
+		13 priv policy url
+		14 dev email
+	
+	
+	
+	
+	
