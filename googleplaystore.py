@@ -203,16 +203,21 @@ class App(object):
 
         # report status code
         print("status code: " + str(data.status_code))
-        _js = data.content#.decode('unicode-escape')
-        reformed = _js[6:].replace(",,", ",None,")
-        reformed = reformed.replace(",, ", ",None,")
-        reformed = reformed.replace(", ,", ",None,")
-        reformed = reformed.replace(",,", ",None,")
-        reformed = reformed.replace("[,", "[None,")
-        reformed = reformed.replace("\n", " ")
-        app = ast.literal_eval(reformed)
+        _arr = data.content
+        # convert javascript array into python list 
+        _arr = _arr[6:].replace(",,", ",None,")
+        _arr = _arr.replace(",, ", ",None,")
+        _arr = _arr.replace(", ,", ",None,")
+        _arr = _arr.replace(",,", ",None,")
+        _arr = _arr.replace("[,", "[None,")
+        _arr = _arr.replace("\n", " ")
+        _arr = _arr.replace('\\"', "\u0027")
+        _app_array = ast.literal_eval(_arr.decode('unicode-escape'))
+        _app_obj = _app_array[0][2][0][55]
+        print(_app_obj[_app_obj.keys()[0]])
         # omg that worked
-        
+        # print json string from python object
+        # print(json.dumps(_app_array, indent=4))
         
         return
         safe_content = data.content.decode('unicode-escape')
