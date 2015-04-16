@@ -197,11 +197,28 @@ class App(object):
         _app_array = ast.literal_eval(_arr)
     
         _app_obj = _app_array[0][2][0][55]
-        print(_app_obj[_app_obj.keys()[0]][1])
+        # types of permissions ....
+        stand_p = _app_obj[_app_obj.keys()[0]][1][0]
+        other_p = _app_obj[_app_obj.keys()[0]][1][1]
+        custom_p = _app_obj[_app_obj.keys()[0]][1][2]
+        _permarr = []
+        
+        for a in stand_p:
+            #print a
+            for b in a[1]:
+                 _permarr.append(b[0])
+        for a in other_p:
+            #print a
+            for b in a[1]:
+                 _permarr.append(b[0])
+        for a in custom_p:
+                 _permarr.append(a[0])
+        
+        
         # omg that worked
         # print json string from python object
-        print(json.dumps(_app_array, indent=4))
-        
+        # print(json.dumps(_app_array, indent=4))
+        self.permissions = _permarr
         return
         safe_content = data.content.decode('unicode-escape')
 
