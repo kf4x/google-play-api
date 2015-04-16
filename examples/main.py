@@ -1,20 +1,12 @@
 import googleplaystore
 import json
-cookie = {"SSID":"",
-          "SID":"",
-          "SAPISID":""
-          "PREF":"",
-          "PLAY_PREFS":"",
-          "PLAY_ACTIVE_ACCOUNT":"",
+cookie = {"PLAY_PREFS":"",
           "NID":"",
-          "HSID":"",
-          "APISID":"",
           "_gat":"",
           "_ga":""
           }
 
-token = ''
-ps = googleplaystore.PlayStore(cookie=cookie, token=token)
+ps = googleplaystore.PlayStore(cookie=cookie)
 #returns a search object
 search = ps.search('twitter')
 # return an array of Apps
