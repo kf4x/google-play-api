@@ -33,6 +33,7 @@ _COOKIE = { "SSID": "",
             "_ga": "" }
 
 
+
 def memoize(f):
     """ Memoization decorator for functions taking one or more arguments. """
     class memodict(dict):
@@ -48,14 +49,16 @@ def memoize(f):
 
 
 class Search(object):
-    """Search API- search the playstore for an app.
-    Attributes:
-        session: requests Session object to be used to search the app store
-        key_word: A string word(s) that will be used as the search term 
-    
-    """
+    """Search Class that allows searching for apps in play store"""
 
-    def __init__(self, session, key_word='',page=1):
+    def __init__(self, session, key_word='', page=1):
+        """Inits Search
+        
+        Args:
+            session: session object from requests.session
+            key_word: word or app or some text you want to search with
+            page: what page of the search will be returned.
+        """
         self.session = session
         self.key_word = key_word
         self.bs_links = []
@@ -63,11 +66,11 @@ class Search(object):
             self._search(key_word, page)
             
         
-    def get_page(self):
-        """Get  all the apps from the page
+    def get_results(self):
+        """Get all the apps from the page
         
         Returns:
-            An array filled with App objects
+            An array filled with App objects, for example:
             [Twitter, Facebook]
         """
         apps = []
@@ -75,25 +78,24 @@ class Search(object):
             index = app['href'].find('=')
             aid = app['href'][index+1:]
             apps.append(App(self.session,
+                            aid,
                             key_word=self.key_word,
-                            app_id=aid, url=app['href'],
+                            url=app['href'],
                             name=app['title']))
         return apps
-
+ 
+    
     def search(self, key_word, page=1):
-        """ Search and return apps from search
+        """Search and return apps from search
         
-        Returns:
-            An array filled with App objects
-            [Twitter, Facebook]
         """
         self._search(key_word, page)
-        return self.get_page()
+        return self.get_results()
     
     def _search(self, key_word, page=1):
         #url= "https://play.google.com/store/search?q=" + key_word + "&c=apps" + "&start=" + str((page-1)*24) + "&num=24"
         # no longer support pagination
-        url= "https://play.google.com/store/search?q=" + key_word + "&c=apps"
+        url = "https://play.google.com/store/search?q=" + key_word + "&c=apps"
         req = self.session.get(url=url )
         soup = BeautifulSoup(req.content,
                                  parse_only=SoupStrainer('a', href=True))
@@ -103,7 +105,7 @@ class Search(object):
         #print(len(self.bs_links))        
 
     def __str__(self):
-        return "SearchObj"
+        return "Search"
     
     def __repr__(self):
         return self.__str__()
@@ -116,16 +118,21 @@ meta_map = {
 
     
 class App(object):
-    """App as object
+    """Class that represents a android app
     """
     
-    def __init__(self, session, **kwargs):
+    def __init__(self, session, app_id, **kwargs):
+        """Inits a App object
+        Args:
+            session: session object from requests.session
+            app_id: string id of the app (package)
+        """
         self.session = session
         # attributes of an app
         self.url = ''
         self.name = ''
         self.dev = ''
-        self.app_id = ''
+        self.app_id = app_id
         self.description = ''
         self.installs = ''
         self.total_ratings = ''
@@ -144,9 +151,13 @@ class App(object):
         self.url = 'https://play.google.com' + self.url
 
     def populate_fields(self):
+        """Populate the apps fields. Sometimes this can
+        take some time which is why you must call it when 
+        you are ready.
+        """
         self.get_permissions()
         self.populate_data()
-        return True
+        
         
     def get_permissions(self):
         """Get all the permissions for this app """
@@ -184,7 +195,7 @@ class App(object):
                                  data=payload)
 
         # report status code
-        print("status code: " + str(data.status_code))
+        print("Request complete, status code: " + str(data.status_code))
         _arr = data.content
         # convert javascript array into python list 
         _arr = _arr[6:].replace(",,", ",None,")
@@ -238,6 +249,8 @@ class App(object):
     def populate_data(self):
         """Helper to set the rest of the attributes of the this app
         """
+        # url to reviews
+        # https://play.google.com/store/getreviews
         item_props = [
             'datePublished',
             'fileSize',
@@ -267,7 +280,7 @@ class App(object):
                         dict(tag.attrs)['itemprop'] in item_props)
         
         screenshots = []
-        # todo need to make this more generic
+        # TODO: need to make this more generic
         for x in all_meta:
 
             item = x.get('itemprop')
@@ -289,10 +302,10 @@ class App(object):
                 self.rating = x.get('content')
             elif 'ratingCount' in item:
                 self.total_ratings = x.get('content')
-            elif 'description' in item:
-                desc = x.find('div', {'class':'id-app-orig-desc'})
-                print type(desc)
-                self.description = ''
+            # elif 'description' in item:
+            #     desc = x.find('div', {'class':'id-app-orig-desc'})
+            #     print type(desc)
+            #     self.description = ''
                 
                 
             
@@ -309,20 +322,32 @@ class App(object):
         
 
     def __str__(self):
-        return self.name
+        return "App"
 
     def __repr__(self):
         return self.__str__()
 
     
 class PlayStore(Session):
-    """ Interacting with the google play store
-    you will need to supply:
-        cookie
-        token
+    """Main wrapper for the google play store api. 
+    The class is subclassing Session from requests.
     """
-    def __init__ (self,token='', cookie={}):
+    
+    def __init__ (self, cookie, token=''):
+        """Inits PlayStore with cookie and token. Would 
+        strongly suggest only using cookie, otherwise you
+        will need to supply a much larger cookie for 
+        that see googleplaystore._cookie.
         
+        Args:
+            cookie: a dictionary for example:
+                { "PLAY_PREFS": "value",
+                  "NID"       : "value",
+                  "_gat"      : "value",
+                  "_ga"       : "value"
+                }    
+            token: string of a token
+        """
         if token or cookie:
             self.set_creds(token=token, cookie=cookie)
         else:
@@ -351,10 +376,29 @@ class PlayStore(Session):
         self.param_que = {
             'xhr': 1,
         }
+    def get_app(self, app_id):
+        """Get app by its package id
         
-    def search(self, kw, pg=1):
-        """Returns a new search object
+        Args:
+            app_id: String of the package com.google.example
+
+        Returns:
+            App object
         """
-        return Search(self, kw, pg)
+        return App(self, app_id)
+
+        
+    def search(self, search_term='', page=1):
+        """Search the play store with some keyword. NOTE: if 
+        search_term is empty a search object will be returned.
+
+        Args:
+            search_term: string of the keyword, "twitter"
+            page: integer the page you would like
+
+        Returns:
+            Search object
+        """
+        return Search(self, search_term, page)
         
 
