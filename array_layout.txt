@@ -68,7 +68,7 @@ it is sort of structured similar to the publishing platform
 		0 string total ratings at i+1
 		1 string percent ...
 	25 ...
-	26 [[x,[i]]]top developer info
+	26 [[x,[i]]]top developer info/ editor choice
 	27 pretty cost
 	28 []
 	29 []

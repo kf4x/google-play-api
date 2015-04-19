@@ -140,7 +140,7 @@ class App(object):
         self.rating = ''
         self.key_word = ''
         self.screenshots = []
-        self.image = ''
+        self.icon = ''
         self.price = ''
         self.pub_date = ''
         self.genre = ''
@@ -156,7 +156,7 @@ class App(object):
         you are ready.
         """
         self.get_permissions()
-        self.populate_data()
+        #self.populate_data()
         
         
     def get_permissions(self):
@@ -193,7 +193,7 @@ class App(object):
         data = self.session.post(url=url,
                                  headers=headers,
                                  data=payload)
-
+        
         # report status code
         print("Request complete, status code: " + str(data.status_code))
         _arr = data.content
@@ -206,30 +206,44 @@ class App(object):
         _arr = _arr.replace('\r',' ').replace('\n',' ')
         _arr = _arr.replace('\\"', "\u0027")
         _app_array = ast.literal_eval(_arr)
-    
         _app_obj = _app_array[0][2][0][55]
+        _app_obj_arr = _app_obj[_app_obj.keys()[0]]
+        
+        self.description = _app_array[0][2][0][9]
+        self.genre =  _app_array[0][2][0][14][0][0]
+        self.rating = _app_array[0][2][0][16]
+        self.total_ratings = _app_array[0][2][0][17]
+        self.name = _app_array[0][2][0][8]
+        self.icon =  _app_array[0][2][0][18]
+        self.pub_date = _app_obj_arr[2]
+        self.price = _app_array[0][2][0][13][0][1]
+        self.size = _app_obj_arr[4] or "varies"
+        self.dev = _app_obj_arr[0][0]
+        self.url =  _app_array[0][2][0][7]
+        self.installs = _app_obj_arr[5] + " - " + _app_obj_arr[6]
+        
         # types of permissions ....
-        stand_p = _app_obj[_app_obj.keys()[0]][1][0]
-        other_p = _app_obj[_app_obj.keys()[0]][1][1]
-        custom_p = _app_obj[_app_obj.keys()[0]][1][2]
+        stand_p = _app_obj_arr[1][0]
+        other_p = _app_obj_arr[1][1]
+        custom_p = _app_obj_arr[1][2]
         _permarr = []
         
         for a in stand_p:
-            #print a
+            # print a
             for b in a[1]:
                  _permarr.append(b[0])
         for a in other_p:
-            #print a
+            # print a
             for b in a[1]:
                  _permarr.append(b[0])
         for a in custom_p:
-                 _permarr.append(a[0])
-        
-        
-        # omg that worked
-        # print json string from python object
-        # print(json.dumps(_app_array, indent=4))
+            _permarr.append(a[0])
+
+        for a in _app_array[0][2][0][20]:
+            self.screenshots.append(a[4])
+                    
         self.permissions = _permarr
+        
         return
         safe_content = data.content.decode('unicode-escape')
 
@@ -291,7 +305,7 @@ class App(object):
             elif 'numDownloads' in item:
                 self.installs = x.contents[0]
             elif 'image' in item:
-                self.image = x.get('src')
+                self.icon = x.get('src')
             elif 'screenshot' in item:
                 screenshots.append(x.get('src'))
             elif 'price' in item:
