@@ -1,5 +1,10 @@
 import googleplaystore
 import json
+
+
+__author__ = 'Javier Chavez'
+__email__ = 'javierc@cs.unm.edu'
+
 cookie = {"PLAY_PREFS":"",
           "NID":"",
           "_gat":"",

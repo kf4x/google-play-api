@@ -4,9 +4,11 @@ from requests.cookies import cookiejar_from_dict
 from bs4 import BeautifulSoup, SoupStrainer
 import ast
 import json
+import logging
+
 
 __author__ = "Javier Chavez"
-
+__email__ = 'javierc@cs.unm.edu'
 
 _URL = "https://play.google.com/store/getreviews"
 _USER_AGENT = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
@@ -20,7 +22,7 @@ _ORIGIN = "https://play.google.com"
 
 
 
-_COOKIE = { "SSID": "",
+_COOKIE = { "SID": "",
             "SID": "",
             "SAPISID": "",
             "PREF": "",
@@ -170,7 +172,7 @@ class App(object):
             raise Exception('You need proper app_id, headers, and cookie!')
 
         # log
-        print('Requesting premissions from google')
+        logging.info('Requesting premissions from google')
     
         #url = 'https://play.google.com/store/getdevicepermissions?authuser=0'
         url = 'https://play.google.com/store/xhr/getdoc?authuser=0'
@@ -195,7 +197,7 @@ class App(object):
                                  data=payload)
         
         # report status code
-        print("Request complete, status code: " + str(data.status_code))
+        logging.info("Request complete, status code: " + str(data.status_code))
         _arr = data.content
         # convert javascript array into python list 
         _arr = _arr[6:].replace(",,", ",None,")
@@ -331,7 +333,8 @@ class App(object):
         
     def to_dict(self):
         app_dict = self.__dict__
-        del app_dict['session']
+        if 'session' in app_dict.keys():
+            del app_dict['session']
         return app_dict
         
 
