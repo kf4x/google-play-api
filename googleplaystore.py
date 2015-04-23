@@ -344,6 +344,10 @@ class App(object):
     def __repr__(self):
         return self.__str__()
 
+    def ga(*args):
+        return getattr(*args)
+    
+    __getitem__ = ga
     
 class PlayStore(Session):
     """Main wrapper for the google play store api. 
