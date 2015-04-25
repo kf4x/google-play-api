@@ -133,8 +133,8 @@ class App(object):
         # attributes of an app
         self.url = ''
         self.name = ''
-        self.dev = ''
-        self.app_id = app_id
+        self.developer = ''
+        self.package = app_id
         self.description = ''
         self.installs = ''
         self.total_ratings = ''
@@ -145,7 +145,7 @@ class App(object):
         self.icon = ''
         self.price = ''
         self.pub_date = ''
-        self.genre = ''
+        self.category = ''
         
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -168,7 +168,7 @@ class App(object):
             return self.permissions
 
         # everything needs to be set inorder to get permissions
-        if not self.app_id or not self.session.header_que or not self.session.cookie_que:
+        if not self.package or not self.session.header_que or not self.session.cookie_que:
             raise Exception('You need proper app_id, headers, and cookie!')
 
         # log
@@ -177,7 +177,7 @@ class App(object):
         #url = 'https://play.google.com/store/getdevicepermissions?authuser=0'
         url = 'https://play.google.com/store/xhr/getdoc?authuser=0'
         # setting referer for header 
-        ref = {'Referer':'https://play.google.com/store/apps/details?id='+self.app_id}
+        ref = {'Referer':'https://play.google.com/store/apps/details?id='+self.package}
 
         # this can be removed
         cookies = self.session.cookie_que.copy()
@@ -187,7 +187,7 @@ class App(object):
         # add to header
         self.session.header_que.update(ref)
         # add to param
-        self.session.param_que.update({'ids':str(self.app_id)})
+        self.session.param_que.update({'ids':str(self.package)})
         headers = self.session.header_que
         payload  = self.session.param_que
 
@@ -211,8 +211,8 @@ class App(object):
         _app_obj = _app_array[0][2][0][55]
         _app_obj_arr = _app_obj[_app_obj.keys()[0]]
         
-        self.description = _app_array[0][2][0][9]
-        self.genre =  _app_array[0][2][0][14][0][0]
+        self.description = _app_array[0][2][0][9].decode('unicode-escape').encode('latin1').decode('utf8')
+        self.category =  _app_array[0][2][0][14][0][0]
         self.rating = _app_array[0][2][0][16]
         self.total_ratings = _app_array[0][2][0][17]
         self.name = _app_array[0][2][0][8]
@@ -220,7 +220,7 @@ class App(object):
         self.pub_date = _app_obj_arr[2]
         self.price = _app_array[0][2][0][13][0][1]
         self.size = _app_obj_arr[4] or "varies"
-        self.dev = _app_obj_arr[0][0]
+        self.developer = _app_obj_arr[0][0]
         self.url =  _app_array[0][2][0][7]
         self.installs = _app_obj_arr[5] + " - " + _app_obj_arr[6]
         
