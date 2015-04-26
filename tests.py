@@ -23,7 +23,7 @@ class GooglePlayStoreAPITestCase(unittest.TestCase):
             "_ga":        os.getenv('_GA', default_value)
         }
 
-
+        
         # init google play store api
         self.ps = googleplaystore.PlayStore(cookie=cookie)
 
@@ -52,12 +52,19 @@ class GooglePlayStoreAPITestCase(unittest.TestCase):
                    'price',
                    'pub_date',
                    'category'
-               ]
+        ]
 
         for field in _feilds:
             self.assertTrue(app[field])
         
 
+    # def test_app_permissions(self):
+    #     app = self.ps.get_app('com.twitter.android')
+    #     app.populate_fields()
+
+        
+        
+        
         
 if __name__ == '__main__':
     unittest.main()

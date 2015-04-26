@@ -84,6 +84,8 @@ class Search(object):
                             key_word=self.key_word,
                             url=app['href'],
                             name=app['title']))
+            
+        logging.debug(str(len(apps)) + " returned for " + self.key_word)
         return apps
  
     
@@ -198,9 +200,13 @@ class App(object):
         
         # report status code
         logging.info("Request complete, status code: " + str(data.status_code))
-        _arr = data.content
-        # convert javascript array into python list 
-        _arr = _arr[6:].replace(",,", ",None,")
+        _arr = data.content.decode("utf-8")
+        #print(_arr)
+        
+        # convert javascript array into python list
+        _arr = _arr.replace(")]}\'\n\n", "")
+        _arr = _arr.replace('\\"', "\u0027")
+        _arr = _arr.replace(",,", ",None,")
         _arr = _arr.replace(",, ", ",None,")
         _arr = _arr.replace(", ,", ",None,")
         _arr = _arr.replace(",,", ",None,")
@@ -209,9 +215,15 @@ class App(object):
         _arr = _arr.replace('\\"', "\u0027")
         _app_array = ast.literal_eval(_arr)
         _app_obj = _app_array[0][2][0][55]
-        _app_obj_arr = _app_obj[_app_obj.keys()[0]]
+        _app_obj_keys = _app_obj.keys()
+        _app_obj_f_k = list(_app_obj_keys)[0]
+        # print(list(_app_obj_keys)[0])
+        _app_obj_arr = _app_obj[_app_obj_f_k]
+        #print(json.dumps(_app_array, indent=4))
+        #_app_obj_arr = _app_obj
+        logging.debug("Conversion JS array ")
         
-        self.description = _app_array[0][2][0][9].decode('unicode-escape').encode('latin1').decode('utf8')
+        self.description = _app_array[0][2][0][9]#.replace(u'\ufeff', '').decode('unicode-escape').encode('latin1').decode('utf8')
         self.category =  _app_array[0][2][0][14][0][0]
         self.rating = _app_array[0][2][0][16]
         self.total_ratings = _app_array[0][2][0][17]
@@ -222,7 +234,7 @@ class App(object):
         self.size = _app_obj_arr[4] or "varies"
         self.developer = _app_obj_arr[0][0]
         self.url =  _app_array[0][2][0][7]
-        self.installs = _app_obj_arr[5] + " - " + _app_obj_arr[6]
+        self.installs = (_app_obj_arr[5] or "0") + " - " + (_app_obj_arr[6] or "5")
         
         # types of permissions ....
         stand_p = _app_obj_arr[1][0]
