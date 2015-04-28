@@ -114,11 +114,6 @@ class Search(object):
     def __repr__(self):
         return self.__str__()
 
-# get rid of this
-meta_map = {
-    'Installs': 'installs',
-    ' Developer ': 'dev',
-}
 
     
 class App(object):
@@ -148,26 +143,57 @@ class App(object):
         self.price = ''
         self.pub_date = ''
         self.category = ''
+        self.reviews = []
+        self.__is_populated = False
         
         for key, value in kwargs.items():
             setattr(self, key, value)
         # preappending host
         self.url = 'https://play.google.com' + self.url
+        # TODO - implement dispatcher
+        # dispatcher = {
+        #     'url': _set_url,
+        #     'name': _set_name,
+        #     'developer': _set_dev,
+        #     'package': _set_package,
+        #     'description': _set_description,
+        #     'installs': _set_installs,
+        #     'total_ratings': _set_ratings,
+        #     'permissions': _set_perms,
+        #     'rating': _set_rating,
+        #     'key_word': _set_kw,
+        #     'screenshots': _set_ss,
+        #     'icon': _set_icon,
+        #     'price': _set_price,
+        #     'pub_date': _set_pd,
+        #     'category': _set_cat,
+        #     'reviews': _set_reviews
+        # }
 
-    def populate_fields(self):
+    def populate_fields(self, exclude=[]):
         """Populate the apps fields. Sometimes this can
         take some time which is why you must call it when 
         you are ready.
         """
-        self.get_permissions()
+        self.get_permissions(exclude)
         #self.populate_data()
         
         
-    def get_permissions(self):
+    def get_permissions(self, exclude=[]):
         """Get all the permissions for this app """
         # if the permissions are already set do not go fetch
-        if self.permissions:
-            return self.permissions
+        if self.__is_populated:
+            return True
+
+        # exlude the fields that do not pretain to app
+        attrs = set(self.__dict__.keys()) - {'session',
+                                             '__is_populated'}
+
+        # if exclude has something in it remove from attrs
+        if exclude:
+            # list used to populate this class
+            attrs = attrs - (set(exclude))
+        
 
         # everything needs to be set inorder to get permissions
         if not self.package or not self.session.header_que or not self.session.cookie_que:
@@ -222,59 +248,89 @@ class App(object):
         #print(json.dumps(_app_array, indent=4))
         #_app_obj_arr = _app_obj
         logging.debug("Conversion JS array ")
+
+        # TODO - check to see if attr is in attrs list
+        # if it is then set it
+        # else ignore
+        if 'description' in attrs:
+            self.description = _app_array[0][2][0][9]
+        if 'category' in attrs:
+            self.category =  _app_array[0][2][0][14][0][0]
+        if 'rating' in attrs:
+            self.rating = _app_array[0][2][0][16]
+        if 'total' in attrs:
+            self.total_ratings = _app_array[0][2][0][17] 
+        if 'name' in attrs:
+            self.name = _app_array[0][2][0][8]
+        if 'icon' in attrs:
+            self.icon =  _app_array[0][2][0][18]
+        if 'pub_date' in attrs:
+            self.pub_date = _app_obj_arr[2]
+        if 'price' in attrs:
+            self.price = _app_array[0][2][0][13][0][1]
+        if 'size' in attrs:
+            self.size = _app_obj_arr[4] or "varies"
+        if 'developer' in attrs:
+            self.developer = _app_obj_arr[0][0]
+        if 'url' in attrs:
+            self.url =  _app_array[0][2][0][7]
+        if 'installs' in attrs:
+            self.installs = (_app_obj_arr[5] or "0") + " - " + (_app_obj_arr[6] or "5")
+        if 'reviews' in attrs:
+            self. reviews = self._get_reviews()
+
+        if 'permissions' in attrs:
+            # types of permissions ....
+            stand_p = _app_obj_arr[1][0]
+            other_p = _app_obj_arr[1][1]
+            custom_p = _app_obj_arr[1][2]
+            _permarr = []
+    
+    
+            for a in stand_p:
+                # print a
+                for b in a[1]:
+                     _permarr.append(b[0])
+            for a in other_p:
+                # print a
+                for b in a[1]:
+                     _permarr.append(b[0])
+            for a in custom_p:
+                _permarr.append(a[0])
+    
+            self.permissions = _permarr            
+
+        if 'screenshots' in attrs:
+            for a in _app_array[0][2][0][20]:
+                self.screenshots.append(a[4])
+
         
-        self.description = _app_array[0][2][0][9]#.replace(u'\ufeff', '').decode('unicode-escape').encode('latin1').decode('utf8')
-        self.category =  _app_array[0][2][0][14][0][0]
-        self.rating = _app_array[0][2][0][16]
-        self.total_ratings = _app_array[0][2][0][17]
-        self.name = _app_array[0][2][0][8]
-        self.icon =  _app_array[0][2][0][18]
-        self.pub_date = _app_obj_arr[2]
-        self.price = _app_array[0][2][0][13][0][1]
-        self.size = _app_obj_arr[4] or "varies"
-        self.developer = _app_obj_arr[0][0]
-        self.url =  _app_array[0][2][0][7]
-        self.installs = (_app_obj_arr[5] or "0") + " - " + (_app_obj_arr[6] or "5")
+        return True
+        # safe_content = data.content.decode('unicode-escape')
+
+        # _beg = str(safe_content).find('<div')
+        # _end = str(safe_content).rfind('</div>')
+
+        # safe_content = safe_content[(_beg-4):]
+        # safe_content = safe_content[:_end]
+
+        # soup = BeautifulSoup(safe_content)
+        # items = soup('div', {'class': 'perm-description'})
+        # # cleaning up permissions to be returned as array of str's
+        # self.permissions = [str(item.contents[0]) for item in items]
+        # self.__is_populated = True
+        # return self.permissions
+
+    def _set_perms(self):
+        # move permission stuff here.
+        pass
+
+    def _get_reviews(self):
+        return []
         
-        # types of permissions ....
-        stand_p = _app_obj_arr[1][0]
-        other_p = _app_obj_arr[1][1]
-        custom_p = _app_obj_arr[1][2]
-        _permarr = []
-        
-        for a in stand_p:
-            # print a
-            for b in a[1]:
-                 _permarr.append(b[0])
-        for a in other_p:
-            # print a
-            for b in a[1]:
-                 _permarr.append(b[0])
-        for a in custom_p:
-            _permarr.append(a[0])
-
-        for a in _app_array[0][2][0][20]:
-            self.screenshots.append(a[4])
-                    
-        self.permissions = _permarr
-        
-        return
-        safe_content = data.content.decode('unicode-escape')
-
-        _beg = str(safe_content).find('<div')
-        _end = str(safe_content).rfind('</div>')
-
-        safe_content = safe_content[(_beg-4):]
-        safe_content = safe_content[:_end]
-
-        soup = BeautifulSoup(safe_content)
-        items = soup('div', {'class': 'perm-description'})
-        # cleaning up permissions to be returned as array of str's
-        self.permissions = [str(item.contents[0]) for item in items]
-
-        return self.permissions
-
     def populate_data(self):
+        logging.error("Calling non impl. method")
+        raise Exception("Not working")
         """Helper to set the rest of the attributes of the this app
         """
         # url to reviews
@@ -345,8 +401,11 @@ class App(object):
         
     def to_dict(self):
         app_dict = self.__dict__
-        if 'session' in app_dict.keys():
+        _keys =  app_dict.keys()
+        if 'session' in _keys:
             del app_dict['session']
+        if '__is_populated' in _keys:
+            del app_dict['__is_populated']
         return app_dict
         
 

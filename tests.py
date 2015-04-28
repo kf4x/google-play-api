@@ -56,7 +56,26 @@ class GooglePlayStoreAPITestCase(unittest.TestCase):
 
         for field in _feilds:
             self.assertTrue(app[field])
-        
+
+    def test_app_exclude_feilds(self):
+        app = self.ps.get_app('com.twitter.android')
+        app.populate_fields(exclude=
+                            ['permissions',
+                             'developer',
+                             'icon',
+                             'description',
+                             'screenshots'])
+
+        _feilds = ['permissions',
+                   'developer',
+                   'screenshots',
+                   'description',
+                   'icon',
+        ]
+
+        for field in _feilds:
+            self.assertFalse(app[field])
+
 
     # def test_app_permissions(self):
     #     app = self.ps.get_app('com.twitter.android')
