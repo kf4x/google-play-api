@@ -329,7 +329,7 @@ class App(object):
                                         data=payload)
         
         # report status code
-        logging.info("Request complete, status code: " + str(data.status_code))
+        logging.info("Request complete, status code: " + str(review_data.status_code))
         self.session.close()
         # import emoji .decode('unicode-escape')
         raw = review_data.content.replace(b'\\"', b"\u0027")
