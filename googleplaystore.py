@@ -310,7 +310,6 @@ class App(object):
 
     def _set_ratings(self, data):
         _stars = data[0][2][0][24][0]
-        print(_stars)
         _rating_obj = {
             'rating': data[0][2][0][16],
             'total_ratings': data[0][2][0][17],
@@ -363,7 +362,7 @@ class App(object):
         try:        
             _app_array = ast.literal_eval(rev_arr)
         except Exception as e:
-            logging.warning(e)
+            logging.warning(e + '\n\n' + rev_arr)
             return []
 
         
