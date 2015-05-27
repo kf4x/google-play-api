@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 import ast
 import json
 import logging
-
+import re
 
 __author__ = "Javier Chavez"
 __email__ = 'javierc@cs.unm.edu'
@@ -113,9 +113,8 @@ class App(object):
         self.package = app_id
         self.description = ''
         self.installs = ''
-        self.total_ratings = ''
         self.permissions = []
-        self.rating = ''
+        self.rating = {}
         self.key_word = ''
         self.screenshots = []
         self.icon = ''
@@ -126,7 +125,7 @@ class App(object):
         self.category = ''
         self.reviews = []
         self.__is_populated = False
- 
+
         for key, value in kwargs.items():
             setattr(self, key, value)
         # preappending host
@@ -186,7 +185,7 @@ class App(object):
 
         #url = 'https://play.google.com/store/getdevicepermissions?authuser=0'
         url = 'https://play.google.com/store/xhr/getdoc?authuser=0'
-        # setting referer for header 
+        # setting referer for header
         ref = {'Referer':'https://play.google.com/store/apps/details?id='+self.package}
 
         # I am copying the cookie que into a variable
@@ -209,6 +208,7 @@ class App(object):
         data = self.session.post(url=url,
                                  headers=headers,
                                  data=payload)
+        
         # close this since we will be making more calls
         self.session.close()
 
@@ -217,7 +217,7 @@ class App(object):
 
         # decode the return binary data
         _arr = data.content.decode("utf-8")
- 
+
         # convert javascript array into python list
         _arr = _arr.replace(")]}\'\n\n", "")
         _arr = _arr.replace('\\"', "\u0027")
@@ -228,9 +228,14 @@ class App(object):
         _arr = _arr.replace("[,", "[None,")
         _arr = _arr.replace('\r', ' ').replace('\n', ' ')
         _arr = _arr.replace('\\"', "\u0027")
-        
+
         _app_array = ast.literal_eval(_arr)
-        #print(json.dumps(_app_array, indent=4))
+        if _app_array[0][0] != "gdar":
+            logging.warning('Not able to decode %s' % self.package)
+            #logging.warning(json.dumps(_app_array))
+            return
+        # print(json.dumps(_app_array, indent=4))
+        
         _app_obj = _app_array[0][2][0][55]
         _app_obj_keys = _app_obj.keys()
         _app_obj_f_k = list(_app_obj_keys)[0]
@@ -248,9 +253,9 @@ class App(object):
         if 'category' in attrs:
             self.category = _app_array[0][2][0][14][0][0]
         if 'rating' in attrs:
-            self.rating = _app_array[0][2][0][16]
-        if 'total' in attrs:
-            self.total_ratings = _app_array[0][2][0][17]
+            self.rating = self._set_ratings(_app_array) # _app_array[0][2][0][16]
+        # if 'total' in attrs:
+            # self.total_ratings = _app_array[0][2][0][17]
         if 'name' in attrs:
             self.name = _app_array[0][2][0][8]
         if 'icon' in attrs:
@@ -267,7 +272,7 @@ class App(object):
             self.url = _app_array[0][2][0][7]
         if 'installs' in attrs:
             self.installs = (_app_obj_arr[5] or "0") + " - " + (_app_obj_arr[6] or "5")
-        
+
         if 'permissions' in attrs:
             # types of permissions ....
             stand_p = _app_obj_arr[1][0]
@@ -287,7 +292,7 @@ class App(object):
             for a in custom_p:
                 _permarr.append(a[0])
 
-            self.permissions = _permarr            
+            self.permissions = _permarr
 
         if 'screenshots' in attrs:
             for a in _app_array[0][2][0][20]:
@@ -303,38 +308,47 @@ class App(object):
         # move permission stuff here.
         pass
 
+    def _set_ratings(self, data):
+        _stars = data[0][2][0][24][0]
+        print(_stars)
+        _rating_obj = {
+            'rating': data[0][2][0][16],
+            'total_ratings': data[0][2][0][17],
+            'one_star': _stars[4][0],
+            'two_star': _stars[3][0],
+            'three_star': _stars[2][0],
+            'four_star': _stars[1][0],
+            'five_star': _stars[0][0]
+        }
+        return _rating_obj
+
     def _get_reviews(self):
         url = 'https://play.google.com/store/getreviews?authuser=0'
         ref = {'Referer':'https://play.google.com/store/apps/details?id='+self.package}
-
-        # this can be removed
+        
+        # copy all the attrs from the session... we do not want to make changes to it...
         cookies = self.session.cookie_que.copy()
-        # preparing cooies
-        requests.utils.add_dict_to_cookiejar(self.session.cookies, cookies)
+        headers = self.session.header_que.copy()
+        payload = self.session.param_que.copy()
 
-        # add the referer to header
-        self.session.header_que.update(ref)
-        # add to param
-        self.session.param_que.update({'id': str(self.package),
-                                       'reviewType': 0,
-                                       'pageNum': 0,
-                                       'reviewSortOrder': 4})
-
-        headers = self.session.header_que
-        payload = self.session.param_que
-
-        # setting everything for post
-        review_data = self.session.post(url=url,
-                                        headers=headers,
-                                        data=payload)
+        # update the new copy
+        headers.update(ref)
+        # update the payload 
+        payload.update({'id': str(self.package),
+                        'reviewType': 0,
+                        'pageNum': 0,
+                        'reviewSortOrder': 4})
+        
+        review_data = requests.post(url, headers=headers, data=payload, cookies=cookies) 
         
         # report status code
         logging.info("Request complete, status code: " + str(review_data.status_code))
-        self.session.close()
-        # import emoji .decode('unicode-escape')
+
+        # begin conversion from js to python object
         raw = review_data.content.replace(b'\\"', b"\u0027")
         rev_arr = raw.decode('unicode-escape')
 
+        
         # convert javascript array into python list
         rev_arr = rev_arr.replace(")]}\'\n\n", "")
         #rev_arr = rev_arr.replace('\\"', "\u0027")
@@ -345,11 +359,32 @@ class App(object):
         rev_arr = rev_arr.replace("[,", "[None,")
         rev_arr = rev_arr.replace('\r', ' ').replace('\n', ' ')
 
-        _app_array = ast.literal_eval(rev_arr)
+        _app_array = []
+        try:        
+            _app_array = ast.literal_eval(rev_arr)
+        except Exception as e:
+            logging.warning(e)
+            return []
 
-        #print(len(_app_array))
-
-        return _app_array[0][2]
+        
+        # load up the html data into bs4
+        soup = BeautifulSoup(_app_array[0][2])
+        # get all the reviews
+        all_reviews = soup('div', {'class': 'single-review'})
+        
+        _review_objs_arr = []
+        for rev in all_reviews:
+            # create a dict of the review and append to a list
+            rating_string = rev.find('div', {'class': 'current-rating'}).get('style')
+            _review_objs_arr.append({'image': rev.find('img')['src'],
+                                     'author': rev.find('span', {'class': 'author-name'}).text,
+                                     'rating': re.findall('\d+', rating_string)[0],
+                                     'title': rev.find('span', {'class': 'review-title'}).text,
+                                     'review-text': rev.find('div', {'class': 'review-body'}).text})
+        
+        # print(json.dumps(_review_objs_arr[0], indent=4))
+        
+        return _review_objs_arr
 
     def populate_data(self):
         """Helper to set the rest of the attributes of the this app"""
@@ -374,13 +409,13 @@ class App(object):
             'ratingCount',
             'description'
         ]
-        
+
         html = self.session.get(self.url)
-        
+
         soup = BeautifulSoup(html.content.decode('unicode-escape'))
         # using find since it only returns a single obj
         # self.description = soup.find('div', {'itemprop': 'description'}).contents
-        
+
         # get all the tags that has attribute itemprop and
         # the value of itemprop is in item_props list
         all_meta = soup(lambda tag: 'itemprop' in tag.attrs and
@@ -413,15 +448,15 @@ class App(object):
             #     desc = x.find('div', {'class':'id-app-orig-desc'})
             #     print type(desc)
             #     self.description = ''
-                
-                
-            
+
+
+
 
         self.screenshots = screenshots
         del screenshots
         del all_meta
         return True
-        
+
     def to_dict(self):
         app_dict = self.__dict__
         _keys = app_dict.keys()
@@ -442,7 +477,7 @@ class App(object):
         return getattr(*args)
 
     __getitem__ = ga
-    
+
 class PlayStore(Session):
     """Main wrapper for the google play store api.
     The class is subclassing Session from requests.
@@ -453,7 +488,7 @@ class PlayStore(Session):
         strongly suggest only using cookie, otherwise you
         will need to supply a much larger cookie for
         that see googleplaystore._cookie.
-        
+
         Args:
             cookie: a dictionary for example:
                 { "PLAY_PREFS": "value",
@@ -469,7 +504,7 @@ class PlayStore(Session):
             self.cookie_que = {}
             self.param_que = {}
 
-        # default headers que'd 
+        # default headers que'd
         self.header_que = {
             "accept": _ACCEPT,
             "accept-encoding": _ACCEPT_ENCODING,
@@ -493,7 +528,7 @@ class PlayStore(Session):
         }
     def get_app(self, app_id):
         """Get app by its package id
-        
+
         Args:
             app_id: String of the package com.google.example
 
@@ -502,9 +537,9 @@ class PlayStore(Session):
         """
         return App(self, app_id)
 
-        
+
     def search(self, search_term='', page=1):
-        """Search the play store with some keyword. NOTE: if 
+        """Search the play store with some keyword. NOTE: if
         search_term is empty a search object will be returned.
 
         Args:
@@ -515,5 +550,3 @@ class PlayStore(Session):
             Search object
         """
         return Search(self, search_term, page)
-        
-
